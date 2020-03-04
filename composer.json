@@ -1,0 +1,29 @@
+{
+    "name": "quizapp/quizapp",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Antonio Codrea",
+            "email": "antonio.codrea@evozon.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:ToniCodrea/mvc-framework-skeleton.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "git@github.com:ToniCodrea/ORM.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "git@github.com:ToniCodrea/codeHighlightLib.git"
+        }
+    ],
+    "require": {
+        "mvcframework/mvcframework" : "dev-master",
+        "really-orm-skeleton" : "dev-master",
+        "codehighlightlib/codehighlightlib" : "dev-master"
+    }
+}
