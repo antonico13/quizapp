@@ -436,16 +436,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.10.2",
+            "version": "v1.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9"
+                "reference": "451c3cd1418cf640de218914901e51b064abb093"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
-                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/451c3cd1418cf640de218914901e51b064abb093",
+                "reference": "451c3cd1418cf640de218914901e51b064abb093",
                 "shasum": ""
             },
             "require": {
@@ -495,7 +495,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-01-20T15:57:02+00:00"
+            "time": "2020-03-05T15:02:03+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -937,12 +937,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ToniCodrea/ORM.git",
-                "reference": "19ca5f2f8e1fe7187bc10727f47d8b15529af5e6"
+                "reference": "d9921b61086837b1bb89fb86d78c3479ad603fdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ToniCodrea/ORM/zipball/19ca5f2f8e1fe7187bc10727f47d8b15529af5e6",
-                "reference": "19ca5f2f8e1fe7187bc10727f47d8b15529af5e6",
+                "url": "https://api.github.com/repos/ToniCodrea/ORM/zipball/d9921b61086837b1bb89fb86d78c3479ad603fdd",
+                "reference": "d9921b61086837b1bb89fb86d78c3479ad603fdd",
                 "shasum": ""
             },
             "require": {
@@ -969,7 +969,7 @@
                 "source": "https://github.com/ToniCodrea/ORM/tree/master",
                 "issues": "https://github.com/ToniCodrea/ORM/issues"
             },
-            "time": "2020-03-04T08:26:26+00:00"
+            "time": "2020-03-05T17:49:04+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

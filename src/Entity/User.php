@@ -18,6 +18,11 @@ class User extends AbstractEntity
      */
     private $email;
     /**
+     * @var string
+     * @ORM role
+     */
+    private $role;
+    /**
      * @var int
      * @UID
      * @ORM id
@@ -32,6 +37,11 @@ class User extends AbstractEntity
     public function setEmail(string $email)
     {
         $this->email = $email;
+    }
+
+    public function setRole(string $role)
+    {
+        $this->role = $role;
     }
 
     public function getId()

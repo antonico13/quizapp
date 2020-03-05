@@ -7,17 +7,26 @@ use Framework\Controller\AbstractController;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Routing\RouteMatch;
+use Quizapp\Entity\QuizTemplate;
 use Quizapp\Entity\User;
+use ReallyOrm\Repository\RepositoryManagerInterface;
 
 class UserController extends AbstractController
 {
     /**
+     * @var RepositoryManagerInterface
+     */
+    private $repositoryManager;
+
+    /**
      * UserController constructor.
      * @param RendererInterface $renderer
+     * @param $repositoryManager
      */
-    public function __construct(RendererInterface $renderer)
+    public function __construct(RendererInterface $renderer, RepositoryManagerInterface $repositoryManager)
     {
         parent::__construct($renderer);
+        $this->repositoryManager = $repositoryManager;
     }
 
     /**
@@ -37,7 +46,18 @@ class UserController extends AbstractController
     public function add (RouteMatch $routeMatch, Request $request) {
         $user = new User();
         $data = ['name' => $request->getParameter('name'), 'email' => $request->getParameter('email'), 'role' => $request->getParameter('role')];
+        $user->setName($data['name']);
+        $user->setEmail($data['email']);
+        $user->setRole($data['role']);
+        $this->repositoryManager->register($user);
+        $user->save();
         return $this->renderer->renderJson($data);
+    }
+
+    public function getQuiz (RouteMatch $routeMatch, Request $request) {
+        $id = $routeMatch->getRequestAttributes()['id'];
+        $user = $this->repositoryManager->getRepository(User::class)->find($id);
+        $quizes = $this->repositoryManager->getRepository(User::class)->getForeignEntities(QuizTemplate::class, $user);
     }
 
     /**

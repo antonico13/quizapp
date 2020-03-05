@@ -55,7 +55,16 @@ return [
                 Router::CONFIG_KEY_ATTRIBUTES => [
                     'id' => '\d+'
                 ]
-            ]
+            ],
+            'user_get_quiz' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'getQuiz',
+                Router::CONFIG_KEY_PATH => '/user/{id}/quiz/',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
+                ]
+            ],
         ],
     ],
     'database' => [
