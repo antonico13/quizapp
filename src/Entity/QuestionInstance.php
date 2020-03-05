@@ -5,7 +5,7 @@ namespace Quizapp\Entity;
 
 use ReallyOrm\Entity\AbstractEntity;
 
-class QuestionTemplate extends AbstractEntity
+class QuestionInstance extends AbstractEntity
 {
     /**
      * @var int
@@ -15,12 +15,17 @@ class QuestionTemplate extends AbstractEntity
     private $id;
     /**
      * @var string
+     * @ORM text
+     */
+    private $text;
+    /**
+     * @var string
      * @ORM type
      */
     private $type;
     /**
-     * @var string
-     * @ORM text
+     * @var bool
+     * @ORM isAnswered
      */
-    private $text;
+    private $isAnswered;
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 use Framework\Contracts\DispatcherInterface;
 use Framework\Contracts\RendererInterface;
 use Framework\Contracts\RouterInterface;
@@ -9,7 +8,7 @@ use Framework\Dispatcher\Dispatcher;
 use Framework\Renderer\Renderer;
 use Framework\Router\Router;
 use Quizapp\Controller\UserController;
-use Quizapp\Entity\Quiz;
+use Quizapp\Entity\QuizInstance;
 use Quizapp\Entity\User;
 use ReallyOrm\Hydrator\HydratorInterface;
 use ReallyOrm\Repository\RepositoryInterface;
@@ -61,7 +60,7 @@ $container->register(RepositoryInterface::class, UserRepository::class)
     ->addTag('repository');
 $container->register(RepositoryInterface::class, QuizRepository::class)
     ->addArgument(new Reference(PDO::class))
-    ->addArgument(new Reference(Quiz::class))
+    ->addArgument(new Reference(QuizInstance::class))
     ->addArgument(new Reference(Hydrator::class))
     ->addTag('repository');
 $repoManager = $container->getDefinition(RepositoryManagerInterface::class);
