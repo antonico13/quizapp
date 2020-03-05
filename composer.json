@@ -21,9 +21,13 @@
             "url":  "git@github.com:ToniCodrea/codeHighlightLib.git"
         }
     ],
+    "autoload": {
+        "psr-4": { "Quizapp\\": "src" }
+    },
     "require": {
         "mvcframework/mvcframework" : "dev-master",
         "really-orm-skeleton" : "dev-master",
-        "codehighlightlib/codehighlightlib" : "dev-master"
+        "codehighlightlib/codehighlightlib" : "dev-master",
+        "ext-pdo": "*"
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "04672a72127b322a45b18e27c016aef6",
+    "content-hash": "69aea797c80dfb8388ac1be264e03510",
     "packages": [
         {
             "name": "codehighlightlib/codehighlightlib",
@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ToniCodrea/mvc-framework-skeleton.git",
-                "reference": "7e5776e471401072c0d426ce3c7b12d1cc17a667"
+                "reference": "38474dc6bb856a34fb8bd2e01f40d8474d900afd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ToniCodrea/mvc-framework-skeleton/zipball/7e5776e471401072c0d426ce3c7b12d1cc17a667",
-                "reference": "7e5776e471401072c0d426ce3c7b12d1cc17a667",
+                "url": "https://api.github.com/repos/ToniCodrea/mvc-framework-skeleton/zipball/38474dc6bb856a34fb8bd2e01f40d8474d900afd",
+                "reference": "38474dc6bb856a34fb8bd2e01f40d8474d900afd",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
             "support": {
                 "source": "https://github.com/ToniCodrea/mvc-framework-skeleton/tree/master"
             },
-            "time": "2020-03-03T07:27:43+00:00"
+            "time": "2020-03-05T13:32:20+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -1874,6 +1874,8 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-pdo": "*"
+    },
     "platform-dev": []
 }
