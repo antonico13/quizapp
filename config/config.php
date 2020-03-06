@@ -53,6 +53,14 @@ return [
                 Router::CONFIG_KEY_ATTRIBUTES => [
                 ]
             ],
+            'admin_get_quizzes' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'getQuizzes',
+                Router::CONFIG_KEY_PATH => '/admin/quizzes',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
         ],
     ],
     'database' => [

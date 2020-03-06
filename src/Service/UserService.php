@@ -3,6 +3,7 @@
 
 namespace Quizapp\Service;
 
+use Quizapp\Entity\QuizTemplate;
 use ReallyOrm\Entity\EntityInterface;
 
 class UserService extends AbstractService
@@ -31,6 +32,16 @@ class UserService extends AbstractService
 
             return $this->session->get('role');
         }
+    }
+
+    public function getQuizzes() : array
+    {
+        $email = $this->session->get('email');
+        $user = $this->findUser($email);
+
+        $data = $this->entityRepo->getForeignEntities(QuizTemplate::class, $user);
+
+        return $this->entityRepo->getForeignEntities(QuizTemplate::class, $user);
     }
 
 }

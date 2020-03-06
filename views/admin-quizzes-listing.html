@@ -20,7 +20,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <!--Custom css-->
-    <link rel="stylesheet" href="../public/assets/css/custom-css.css">
+    <link rel="stylesheet" href="assets/css/custom-css.css">
 
     <title>Admin - Quizzes listing</title>
 </head>
@@ -83,36 +83,18 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php foreach ($data as $datum) :?>
                 <tr>
                     <th scope="row">1</th>
-                    <td>asd asad asdadadsad</td>
-                    <td>azxczxc cxzc</td>
+                    <td> <?php echo $datum->getID() ?> </td>
+                    <td> <?php echo $datum->getName() ?> </td>
                     <td>1</td>
                     <td class="text-center">
                         <a class="btn btn-primary py-1" href="#">Edit</a>
                         <a class="btn btn-danger py-1" href="#">Delete</a>
                     </td>
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>asd asad asdadadsad</td>
-                    <td>azxczxc cxzc</td>
-                    <td>2</td>
-                    <td class="text-center">
-                        <a class="btn btn-primary py-1" href="#">Edit</a>
-                        <a class="btn btn-danger py-1" href="#">Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>asd asad asdadadsad</td>
-                    <td>azxczxc cxzc</td>
-                    <td>3</td>
-                    <td class="text-center">
-                        <a class="btn btn-primary py-1" href="#">Edit</a>
-                        <a class="btn btn-danger py-1" href="#">Delete</a>
-                    </td>
-                </tr>
+                <?php endforeach ?>
                 </tbody>
             </table>
         </div>
