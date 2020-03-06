@@ -3,20 +3,24 @@
 use Framework\Contracts\DispatcherInterface;
 use Framework\Contracts\RendererInterface;
 use Framework\Contracts\RouterInterface;
+use Framework\Contracts\SessionInterface;
 use Framework\DependencyInjection\SymfonyContainer;
 use Framework\Dispatcher\Dispatcher;
 use Framework\Renderer\Renderer;
 use Framework\Router\Router;
+use Framework\Session\Session;
 use Quizapp\Controller\UserController;
 use Quizapp\Entity\QuizInstance;
+use Quizapp\Entity\QuizTemplate;
 use Quizapp\Entity\User;
+use Quizapp\Repository\QuizTemplateRepository;
+use Quizapp\Repository\UserRepository;
+use Quizapp\Service\UserService;
 use ReallyOrm\Hydrator\HydratorInterface;
 use ReallyOrm\Repository\RepositoryInterface;
 use ReallyOrm\Repository\RepositoryManagerInterface;
 use ReallyOrm\Test\Hydrator\Hydrator;
-use ReallyOrm\Test\Repository\QuizRepository;
 use ReallyOrm\Test\Repository\RepositoryManager;
-use ReallyOrm\Test\Repository\UserRepository;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -45,9 +49,9 @@ $container->register(UserRepository::class, UserRepository::class)
     ->addArgument(new Reference(HydratorInterface::class))
     ->addTag('repository');
 
-$container->register(QuizRepository::class, QuizRepository::class)
+$container->register(QuizTemplateRepository::class, QuizTemplateRepository::class)
     ->addArgument(new Reference(PDO::class))
-    ->addArgument(QuizInstance::class)
+    ->addArgument(QuizTemplate::class)
     ->addArgument(new Reference(HydratorInterface::class))
     ->addTag('repository');
 
@@ -63,16 +67,26 @@ $container->register(RouterInterface::class, Router::class)
 $container->setParameter('baseViewPath', dirname(__DIR__, 1).'/views/');
 $container->register(RendererInterface::class, Renderer::class)
     ->addArgument('%baseViewPath%');
+
+$container->register(SessionInterface::class, Session::class);
+
+$container->register(UserService::class, UserService::class)
+        ->addArgument(new Reference(UserRepository::class))
+        ->addArgument(new Reference(SessionInterface::class));
+
 $container->register(UserController::class,UserController::class)
     ->addArgument(new Reference(RendererInterface::class))
-    ->addArgument(new Reference(RepositoryManagerInterface::class))
+    ->addArgument(new Reference(UserService::class))
     ->addTag('controller');
+
 $container->setParameter('controllerNamespace', $config['dispatcher']['controllerNamespace']);
 $container->setParameter('controllerSuffix', $config['dispatcher']['controllerSuffix']);
 $container->register(DispatcherInterface::class, Dispatcher::class)
     ->addArgument('%controllerNamespace%')
     ->addArgument( '%controllerSuffix%');
+
 $dispatcher = $container->getDefinition(DispatcherInterface::class);
+
 foreach ($container->findTaggedServiceIds('controller') as $id => $value) {
     $controller = $container->getDefinition($id);
     $dispatcher->addMethodCall('addController', [$controller]);

@@ -13,56 +13,44 @@ return [
         ],
     'routing' => [
         'routes' => [
-            'user_get' => [
+            'user_homepage' => [
                 Router::CONFIG_KEY_METHOD => 'GET',
                 Router::CONFIG_KEY_CONTROLLER => 'user',
-                Router::CONFIG_KEY_ACTION => 'get',
-                Router::CONFIG_KEY_PATH => '/user/{id}',
-                Router::CONFIG_KEY_ATTRIBUTES => [
-                    'id' => '\d+'
-                ]
-            ],
-            'user_get_all' => [
-                Router::CONFIG_KEY_METHOD => 'GET',
-                Router::CONFIG_KEY_CONTROLLER => 'user',
-                Router::CONFIG_KEY_ACTION => 'getAll',
+                Router::CONFIG_KEY_ACTION => 'getHomepage',
                 Router::CONFIG_KEY_PATH => '/user',
-                Router::CONFIG_KEY_ATTRIBUTES => []
-            ],
-            'user_post' => [
-                Router::CONFIG_KEY_METHOD => 'POST',
-                Router::CONFIG_KEY_CONTROLLER => 'user',
-                Router::CONFIG_KEY_ACTION => 'update',
-                Router::CONFIG_KEY_PATH => '/user/{id}/role/{name}/',
-                Router::CONFIG_KEY_ATTRIBUTES => [
-                    'id' => '\d+',
-                    'name' => '\w+'
-                ]
-            ],
-            'user_add' => [
-                Router::CONFIG_KEY_METHOD => 'POST',
-                Router::CONFIG_KEY_CONTROLLER => 'user',
-                Router::CONFIG_KEY_ACTION => 'add',
-                Router::CONFIG_KEY_PATH => '/user/',
                 Router::CONFIG_KEY_ATTRIBUTES => [
                 ]
             ],
-            'user_delete' => [
-                Router::CONFIG_KEY_METHOD => 'DELETE',
-                Router::CONFIG_KEY_CONTROLLER => 'user',
-                Router::CONFIG_KEY_ACTION => 'delete',
-                Router::CONFIG_KEY_PATH => '/user/{id}',
-                Router::CONFIG_KEY_ATTRIBUTES => [
-                    'id' => '\d+'
-                ]
-            ],
-            'user_get_quiz' => [
+            'admin_dashboard' => [
                 Router::CONFIG_KEY_METHOD => 'GET',
                 Router::CONFIG_KEY_CONTROLLER => 'user',
-                Router::CONFIG_KEY_ACTION => 'getQuiz',
-                Router::CONFIG_KEY_PATH => '/user/{id}/quiz/',
+                Router::CONFIG_KEY_ACTION => 'getDashboard',
+                Router::CONFIG_KEY_PATH => '/admin',
                 Router::CONFIG_KEY_ATTRIBUTES => [
-                    'id' => '\d+'
+                ]
+            ],
+            'user_login' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'login',
+                Router::CONFIG_KEY_PATH => '/login',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'user_getLogin' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'getLogin',
+                Router::CONFIG_KEY_PATH => '/',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'user_logout' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'logout',
+                Router::CONFIG_KEY_PATH => '/logout',
+                Router::CONFIG_KEY_ATTRIBUTES => [
                 ]
             ],
         ],

@@ -23,6 +23,11 @@ class User extends AbstractEntity
      */
     private $role;
     /**
+     * @var string
+     * @ORM password
+     */
+    private $password;
+    /**
      * @var int
      * @UID
      * @ORM id
@@ -54,9 +59,19 @@ class User extends AbstractEntity
         return $this->name;
     }
 
+    public function getRole() : string
+    {
+        return $this->role;
+    }
+
     public function getEmail() : string
     {
         return $this->email;
+    }
+
+    public function getPassword() : string
+    {
+        return $this->password;
     }
 
     public function getQuizes() : array {
