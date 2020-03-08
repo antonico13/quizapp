@@ -70,6 +70,7 @@ class UserController extends AbstractController
 
         return $this->renderer->renderView('admin-quizzes-listing.html', ['data' => $data]);
     }
+
     /*/**
      * @param RouteMatch $routeMatch
      * @param Request $request

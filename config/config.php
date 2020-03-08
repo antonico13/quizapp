@@ -61,6 +61,54 @@ return [
                 Router::CONFIG_KEY_ATTRIBUTES => [
                 ]
             ],
+            'get_questions' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
+                Router::CONFIG_KEY_ACTION => 'getQuestions',
+                Router::CONFIG_KEY_PATH => '/admin/questions',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'add_questions_page' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
+                Router::CONFIG_KEY_ACTION => 'addQuestions',
+                Router::CONFIG_KEY_PATH => '/admin/questions/add',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'add_question' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
+                Router::CONFIG_KEY_ACTION => 'add',
+                Router::CONFIG_KEY_PATH => '/admin/questions/add',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'delete_question' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
+                Router::CONFIG_KEY_ACTION => 'delete',
+                Router::CONFIG_KEY_PATH => '/admin/questions/delete/',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'edit_questions_page' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
+                Router::CONFIG_KEY_ACTION => 'editQuestion',
+                Router::CONFIG_KEY_PATH => '/admin/questions/edit/',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'edit_question' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
+                Router::CONFIG_KEY_ACTION => 'edit',
+                Router::CONFIG_KEY_PATH => '/admin/questions/edit/',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
         ],
     ],
     'database' => [

@@ -20,7 +20,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <!--Custom css-->
-    <link rel="stylesheet" href="../public/assets/css/custom-css.css">
+    <link rel="stylesheet" href="assets/css/custom-css.css">
 
     <title>Admin - Questions listing</title>
 </head>
@@ -52,10 +52,10 @@
         <!--Table actions block-->
         <div class="row">
             <div class="col-12 col-md-6">
-                <form action="">
+                <form action="" method = "get">
                     <label for="textSearch">Text search</label>
                     <div class="input-group">
-                        <input type="text" id="textSearch" class="form-control" placeholder="">
+                        <input type="text" id="textSearch" name = "search" class="form-control" placeholder="">
                         <div class="input-group-append">
                             <button class="btn btn-secondary" type="submit">
                                 <i class="fa fa-search"></i>
@@ -65,7 +65,7 @@
                 </form>
             </div>
             <div class="col-12 col-md-6 d-flex align-items-end justify-content-end">
-                <a class="btn btn-primary py-1" href="#">Add new question</a>
+                <a class="btn btn-primary py-1" href="/admin/questions/add">Add new question</a>
             </div>
         </div>
 
@@ -81,30 +81,16 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php foreach ($data as $datum) :?>
                 <tr>
-                    <th scope="row">1</th>
-                    <td>asd asad asdadadsad</td>
+                    <th scope="row"><?php echo $datum->getID() ?></th>
+                    <td><?php echo $datum->getText() ?></td>
                     <td class="text-center">
-                        <a class="btn btn-primary py-1" href="#">Edit</a>
-                        <a class="btn btn-danger py-1" href="#">Delete</a>
+                        <a class="btn btn-primary py-1" href="/admin/questions/edit/?id=<?php echo $datum->getID() ?>">Edit</a>
+                        <a class="btn btn-danger py-1" href="/admin/questions/delete/?id=<?php echo $datum->getID() ?>">Delete</a>
                     </td>
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>asd asad asdadadsad</td>
-                    <td class="text-center">
-                        <a class="btn btn-primary py-1" href="#">Edit</a>
-                        <a class="btn btn-danger py-1" href="#">Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>asd asad asdadadsad</td>
-                    <td class="text-center">
-                        <a class="btn btn-primary py-1" href="#">Edit</a>
-                        <a class="btn btn-danger py-1" href="#">Delete</a>
-                    </td>
-                </tr>
+                <?php endforeach ?>
                 </tbody>
             </table>
         </div>

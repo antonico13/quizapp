@@ -23,4 +23,31 @@ class QuestionTemplate extends AbstractEntity
      * @ORM text
      */
     private $text;
+    /**
+     * @var int
+     * @ORM userid
+     */
+    private $userid;
+
+    public function setText($text) {
+        $this->text = $text;
+    }
+
+    public function setType($type) {
+        $this->type = $type;
+    }
+
+    public function setUserID($userId) {
+        $this->userid = $userId;
+    }
+
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    public function getID()
+    {
+        return $this->id;
+    }
 }

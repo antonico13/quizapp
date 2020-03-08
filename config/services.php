@@ -9,12 +9,16 @@ use Framework\Dispatcher\Dispatcher;
 use Framework\Renderer\Renderer;
 use Framework\Router\Router;
 use Framework\Session\Session;
+use Quizapp\Controller\QuestionTemplateController;
 use Quizapp\Controller\UserController;
+use Quizapp\Entity\QuestionTemplate;
 use Quizapp\Entity\QuizInstance;
 use Quizapp\Entity\QuizTemplate;
 use Quizapp\Entity\User;
+use Quizapp\Repository\QuestionTemplateRepository;
 use Quizapp\Repository\QuizTemplateRepository;
 use Quizapp\Repository\UserRepository;
+use Quizapp\Service\QuestionTemplateService;
 use Quizapp\Service\UserService;
 use ReallyOrm\Hydrator\HydratorInterface;
 use ReallyOrm\Repository\RepositoryInterface;
@@ -55,6 +59,12 @@ $container->register(QuizTemplateRepository::class, QuizTemplateRepository::clas
     ->addArgument(new Reference(HydratorInterface::class))
     ->addTag('repository');
 
+$container->register(QuestionTemplateRepository::class, QuestionTemplateRepository::class)
+    ->addArgument(new Reference(PDO::class))
+    ->addArgument(QuestionTemplate::class)
+    ->addArgument(new Reference(HydratorInterface::class))
+    ->addTag('repository');
+
 $repoManager = $container->getDefinition(RepositoryManagerInterface::class);
 foreach ($container->findTaggedServiceIds('repository') as $id => $value) {
     $repository = $container->getDefinition($id);
@@ -78,6 +88,16 @@ $container->register(UserController::class,UserController::class)
     ->addArgument(new Reference(RendererInterface::class))
     ->addArgument(new Reference(UserService::class))
     ->addTag('controller');
+
+$container->register(QuestionTemplateService::class, QuestionTemplateService::class)
+    ->addArgument(new Reference(QuestionTemplateRepository::class))
+    ->addArgument(new Reference(SessionInterface::class));
+
+$container->register(QuestionTemplateController::class,QuestionTemplateController::class)
+    ->addArgument(new Reference(RendererInterface::class))
+    ->addArgument(new Reference(QuestionTemplateService::class))
+    ->addTag('controller');
+
 
 $container->setParameter('controllerNamespace', $config['dispatcher']['controllerNamespace']);
 $container->setParameter('controllerSuffix', $config['dispatcher']['controllerSuffix']);
