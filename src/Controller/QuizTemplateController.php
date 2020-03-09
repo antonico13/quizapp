@@ -27,12 +27,13 @@ class QuizTemplateController extends AbstractController
         $page = $request->getParameter('page');
         $search = $request->getParameter('search');
 
-        if ($page == null) {
-            $page = 1;
-        }
 
         if ($search) {
             $count = $this->quizService->getQuizzesCountSearch($search);
+        }
+
+        if ($page == null || $page == 0 || $page > $count || !is_numeric($page)) {
+            $page = 1;
         }
 
         $data = $this->quizService->getQuizzes($page);
@@ -43,7 +44,7 @@ class QuizTemplateController extends AbstractController
 
         $count = ceil($count/5);
 
-        return $this->renderer->renderView('admin-quizzes-listing.html', ['data' => $data, 'count' => $count, 'page' => $page, 'search' => $search]);
+        return $this->renderer->renderView('admin-quizzes-listing.phtml', ['data' => $data, 'count' => $count, 'page' => $page, 'search' => $search]);
     }
 
     public function addQuizzes (RouteMatch $routeMatch, Request $request) {

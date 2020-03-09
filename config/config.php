@@ -206,6 +206,14 @@ return [
                     'id' => '\d+'
                 ]
             ],
+            'get_results' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'results',
+                Router::CONFIG_KEY_ACTION => 'getResults',
+                Router::CONFIG_KEY_PATH => '/admin/results',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
         ],
     ],
     'database' => [

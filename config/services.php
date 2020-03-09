@@ -110,7 +110,6 @@ $container->register(QuizTemplateController::class,QuizTemplateController::class
     ->addTag('controller');
 
 
-
 $container->setParameter('controllerNamespace', $config['dispatcher']['controllerNamespace']);
 $container->setParameter('controllerSuffix', $config['dispatcher']['controllerSuffix']);
 $container->register(DispatcherInterface::class, Dispatcher::class)

@@ -54,7 +54,7 @@ class QuizTemplate extends AbstractEntity
     }
 
     public function getQuestionNumber () {
-        echo '1';
+        return $this->getRepository()->countQuestions($this->getId());
     }
 
 }

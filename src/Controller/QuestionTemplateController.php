@@ -57,7 +57,7 @@ class QuestionTemplateController extends AbstractController
         $page = $request->getParameter('page');
         $search = $request->getParameter('search');
 
-        if ($page == null) {
+        if ($page == null || $page == 0 || $page > $count || !is_numeric($page)) {
             $page = 1;
         }
 

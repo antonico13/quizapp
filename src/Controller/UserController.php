@@ -74,7 +74,7 @@ class UserController extends AbstractController
     {
         $data = $this->userService->getQuizzes();
 
-        return $this->renderer->renderView('admin-quizzes-listing.html', ['data' => $data]);
+        return $this->renderer->renderView('admin-quizzes-listing.phtml', ['data' => $data]);
     }
 
     //^^^^maybe should be in security controller
@@ -87,9 +87,6 @@ class UserController extends AbstractController
         $role = $request->getParameter('role');
         $filters = [];
 
-        if ($page == null) {
-            $page = 1;
-        }
 
         if ($name) {
             $filters['name'] = $name;
@@ -102,13 +99,17 @@ class UserController extends AbstractController
             $count = $this->userService->getUsersCountSearch($filters);
         }
 
+        $count = ceil($count/5);
+
+        if ($page == null || $page == 0 || $page > $count || !is_numeric($page)) {
+            $page = 1;
+        }
+
         $data = $this->userService->getUsers($page);
 
         if ($filters) {
             $data = $this->userService->getUsersSearch($filters, $page);
         }
-
-        $count = ceil($count/5);
 
         return $this->renderer->renderView('admin-users-listing.html', ['data' => $data, 'count' => $count, 'page' => $page, 'name' => $name]);
     }

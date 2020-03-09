@@ -123,4 +123,14 @@ class QuizTemplateRepository extends AbstractRepository
         return $stm->execute();
     }
 
+    public function countQuestions(int $id) {
+        $sql = 'SELECT COUNT(*) FROM quizquestiontemplate WHERE quiztemplateid = :quizid';
+
+        $stm = $this->pdo->prepare($sql);
+        $stm->bindParam(':quizid', $id);
+        $stm->execute();
+
+        return $stm->fetch()['COUNT(*)'];
+    }
+
 }
