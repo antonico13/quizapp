@@ -33,7 +33,7 @@ class QuestionTemplateController extends AbstractController
     }
 
     public function delete (RouteMatch $routeMatch, Request $request) {
-        $id = $request->getUri()->getQueryArray()[0][1];
+        $id = $routeMatch->getRequestAttributes()['id'];
         $this->questionService->deleteQuestion($id);
         $location = "Location: http://local.quizapp.com/admin/questions";
 
@@ -42,7 +42,7 @@ class QuestionTemplateController extends AbstractController
     }
 
     public function edit (RouteMatch $routeMatch, Request $request) {
-        $id = $request->getUri()->getQueryArray()[0][1];
+        $id = $routeMatch->getRequestAttributes()['id'];
         $data = $request->getParameters();
         $this->questionService->editQuestion($id, $data);
 
@@ -53,10 +53,27 @@ class QuestionTemplateController extends AbstractController
     }
 
     public function getQuestions (RouteMatch $routeMatch, Request $request) {
-        $text = $request->getParameter('search');
-        $data = $this->questionService->getQuestions($text);
+        $count = $this->questionService->getQuestionsCount();
+        $page = $request->getParameter('page');
+        $search = $request->getParameter('search');
 
-        return $this->renderer->renderView('admin-questions-listing.html', ['data' => $data]);
+        if ($page == null) {
+            $page = 1;
+        }
+
+        if ($search) {
+            $count = $this->questionService->getQuestionsCountSearch($search);
+        }
+
+        $data = $this->questionService->getQuestions($page);
+
+        if ($search) {
+            $data = $this->questionService->getQuestionsSearch($search, $page);
+        }
+
+        $count = ceil($count/5);
+
+        return $this->renderer->renderView('admin-questions-listing.html', ['data' => $data, 'count' => $count, 'page' => $page, 'search' => $search]);
     }
 
     public function addQuestions (RouteMatch $routeMatch, Request $request) {
@@ -65,7 +82,7 @@ class QuestionTemplateController extends AbstractController
     }
 
     public function editQuestion (RouteMatch $routeMatch, Request $request) {
-        $id = $request->getUri()->getQueryArray()[0][1];
+        $id = $routeMatch->getRequestAttributes()['id'];
         $question = $this->questionService->getQuestion($id);
 
         return $this->renderer->renderView('admin-question-edit-details.html', ['question' => $question]);

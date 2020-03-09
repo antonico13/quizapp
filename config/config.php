@@ -89,24 +89,27 @@ return [
                 Router::CONFIG_KEY_METHOD => 'GET',
                 Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
                 Router::CONFIG_KEY_ACTION => 'delete',
-                Router::CONFIG_KEY_PATH => '/admin/questions/delete/',
+                Router::CONFIG_KEY_PATH => '/admin/questions/delete/{id}',
                 Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
                 ]
             ],
             'edit_questions_page' => [
                 Router::CONFIG_KEY_METHOD => 'GET',
                 Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
                 Router::CONFIG_KEY_ACTION => 'editQuestion',
-                Router::CONFIG_KEY_PATH => '/admin/questions/edit/',
+                Router::CONFIG_KEY_PATH => '/admin/questions/edit/{id}',
                 Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
                 ]
             ],
             'edit_question' => [
                 Router::CONFIG_KEY_METHOD => 'POST',
                 Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
                 Router::CONFIG_KEY_ACTION => 'edit',
-                Router::CONFIG_KEY_PATH => '/admin/questions/edit/',
+                Router::CONFIG_KEY_PATH => '/admin/questions/edit/{id}',
                 Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
                 ]
             ],
         ],
