@@ -50,4 +50,9 @@ class QuestionTemplate extends AbstractEntity
     {
         return $this->id;
     }
+
+    public function getType()
+    {
+        return $this->type;
+    }
 }

@@ -65,7 +65,7 @@
                 </form>
             </div>
             <div class="col-12 col-md-6 d-flex align-items-end justify-content-end">
-                <a class="btn btn-primary py-1" href="/admin/questions/add">Add new question</a>
+                <a class="btn btn-primary py-1" href="/admin/question/add">Add new question</a>
             </div>
         </div>
 
@@ -77,6 +77,7 @@
                     <!--Sorting arrow are displayed using the 'asc','dsc' classes-->
                     <th scope="col" class="sorting-header asc desc">ID</th>
                     <th scope="col">Text</th>
+                    <th scope="col">Type</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -85,9 +86,10 @@
                 <tr>
                     <th scope="row"><?php echo $datum->getID() ?></th>
                     <td><?php echo $datum->getText() ?></td>
+                    <td><?php echo $datum->getType() ?></td>
                     <td class="text-center">
-                        <a class="btn btn-primary py-1" href="/admin/questions/edit/<?php echo $datum->getID() ?>">Edit</a>
-                        <a class="btn btn-danger py-1" href="/admin/questions/delete/<?php echo $datum->getID() ?>">Delete</a>
+                        <a class="btn btn-primary py-1" href="/admin/question/edit/<?php echo $datum->getID() ?>">Edit</a>
+                        <a class="btn btn-danger py-1" href="/admin/question/delete/<?php echo $datum->getID() ?>">Delete</a>
                     </td>
                 </tr>
                 <?php endforeach ?>
@@ -105,26 +107,26 @@
                 </li>
                 <?php else: ?>
                 <li class="page-item">
-                    <a class="page-link" href="/admin/questions?search=<?php echo $search ?>&page=<?php echo $page-1 ?>" tabindex="-1" >Previous</a>
+                    <a class="page-link" href="/admin/question?search=<?php echo $search ?>&page=<?php echo $page-1 ?>" tabindex="-1" >Previous</a>
                 </li>
                 <?php endif ?>
 
                 <?php for($i = 1; $i <= $count; $i++):?>
 
                 <?php if ($i == $page): ?>
-                <li class="page-item active"><a class="page-link" href="/admin/questions?search=<?php echo $search ?>&page=<?php echo $i ?>"><?php echo $i ?></a></li>
+                <li class="page-item active"><a class="page-link" href="/admin/question?search=<?php echo $search ?>&page=<?php echo $i ?>"><?php echo $i ?></a></li>
                 <?php else: ?>
-                <li class="page-item"><a class="page-link" href="/admin/questions?search=<?php echo $search ?>&page=<?php echo $i ?>"><?php echo $i ?></a></li>
+                <li class="page-item"><a class="page-link" href="/admin/question?search=<?php echo $search ?>&page=<?php echo $i ?>"><?php echo $i ?></a></li>
                 <?php endif ?>
                 <?php endfor ?>
 
-                <?php if ($page == $count): ?>
+                <?php if ($page == $count || $count <= 1.0 ): ?>
                 <li class="page-item disabled">
                     <a class="page-link" href="" tabindex="-1" aria-disabled="true">Next</a>
                 </li>
                 <?php else: ?>
                 <li class="page-item">
-                    <a class="page-link" href="/admin/questions?search=<?php echo $search ?>&page=<?php echo $page+1 ?>" tabindex="-1" >Next</a>
+                    <a class="page-link" href="/admin/question?search=<?php echo $search ?>&page=<?php echo $page+1 ?>" tabindex="-1" >Next</a>
                 </li>
                 <?php endif ?>
             </ul>

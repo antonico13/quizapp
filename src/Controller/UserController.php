@@ -32,11 +32,13 @@ class UserController extends AbstractController
         $this->userService = $userService;
     }
 
-    public function getLogin (RouteMatch $routeMatch, Request $request) {
+    public function getLogin (RouteMatch $routeMatch, Request $request)
+    {
         return $this->renderer->renderView('login.html', []);
     }
 
-    public function login (RouteMatch $routeMatch, Request $request) {
+    public function login (RouteMatch $routeMatch, Request $request)
+    {
         $email = $request->getParameter('email');
         $password = hash('sha256', $request->getParameter('password'));
         $location =  'Location: http://local.quizapp.com/'.$this->userService->login($email, $password);
@@ -45,19 +47,22 @@ class UserController extends AbstractController
         return new Response($body, '1.1', '301', $location);
     }
 
-    public function getHomepage (RouteMatch $routeMatch, Request $request) {
+    public function getHomepage (RouteMatch $routeMatch, Request $request)
+    {
         $name = $this->userService->getName();
 
         return $this->renderer->renderView('candidate-quiz-listing.html', ['name' => $name]);
     }
 
-    public function getDashboard (RouteMatch $routeMatch, Request $request) {
+    public function getDashboard (RouteMatch $routeMatch, Request $request)
+    {
         $name = $this->userService->getName();
 
         return $this->renderer->renderView('admin-dashboard.html', ['name' => $name]);
     }
 
-    public function logout (RouteMatch $routeMatch, Request $request) {
+    public function logout (RouteMatch $routeMatch, Request $request)
+    {
         $this->userService->logout();
         $location = 'Location: http://local.quizapp.com/';
 
@@ -65,69 +70,92 @@ class UserController extends AbstractController
         return new Response($body, '1.1', '301', $location);
     }
 
-    public function getQuizzes (RouteMatch $routeMatch, Request $request) {
+    public function getQuizzes (RouteMatch $routeMatch, Request $request)
+    {
         $data = $this->userService->getQuizzes();
 
         return $this->renderer->renderView('admin-quizzes-listing.html', ['data' => $data]);
     }
 
-    /*/**
-     * @param RouteMatch $routeMatch
-     * @param Request $request
-     * @return Response
-     */
-    /*public function delete (RouteMatch $routeMatch, Request $request) {
-        return $this->renderer->renderJson($routeMatch->getRequestAttributes());
-    } */
+    //^^^^maybe should be in security controller
 
-   /* /**
-     * @param RouteMatch $routeMatch
-     * @param Request $request
-     * @return Response
-     */
-    /*public function add (RouteMatch $routeMatch, Request $request) {
-        $user = new User();
-        $data = ['name' => $request->getParameter('name'), 'email' => $request->getParameter('email'), 'role' => $request->getParameter('role')];
-        $user->setName($data['name']);
-        $user->setEmail($data['email']);
-        $user->setRole($data['role']);
-        $this->repositoryManager->register($user);
-        $user->save();
-        return $this->renderer->renderJson($data);
-    } */
+    public function getUsers (RouteMatch $routeMatch, Request $request)
+    {
+        $count = $this->userService->getUserCount();
+        $page = $request->getParameter('page');
+        $name = $request->getParameter('search');
+        $role = $request->getParameter('role');
+        $filters = [];
 
-    /*public function getQuiz (RouteMatch $routeMatch, Request $request) {
-        $id = $routeMatch->getRequestAttributes()['id'];
-        $user = $this->repositoryManager->getRepository(User::class)->find($id);
-        $quizes = $this->repositoryManager->getRepository(User::class)->getForeignEntities(QuizTemplate::class, $user);
-        var_dump($quizes);
-    } */
-
-   /*
-    /**
-     * @param RouteMatch $routeMatch
-     * @param Request $request
-     * @return Response
-     */
-   /* public function update (RouteMatch $routeMatch, Request $request) {
-        $message = $request->getBody()->getContents();
-        $toRender = array_merge($routeMatch->getRequestAttributes(), ['message' => $message]);
-
-        $query = $request->getUri()->getQuery();
-        $arr = explode('&', $query);
-        foreach ($arr as $key => $value) {
-            $arr[$key] = explode('=', $value);
-            $toRender = array_merge($toRender, [$arr[$key][0] => $arr[$key][1]]);
+        if ($page == null) {
+            $page = 1;
         }
-        return $this->renderer->renderView('user2.phtml', $toRender);
+
+        if ($name) {
+            $filters['name'] = $name;
+        }
+        if ($role) {
+            $filters['role'] = $role;
+        }
+
+        if ($filters) {
+            $count = $this->userService->getUsersCountSearch($filters);
+        }
+
+        $data = $this->userService->getUsers($page);
+
+        if ($filters) {
+            $data = $this->userService->getUsersSearch($filters, $page);
+        }
+
+        $count = ceil($count/5);
+
+        return $this->renderer->renderView('admin-users-listing.html', ['data' => $data, 'count' => $count, 'page' => $page, 'name' => $name]);
     }
 
-    /**
-     * @param RouteMatch $routeMatch
-     * @param Request $request
-     * @return Response
-     */
-   /* public function get(RouteMatch $routeMatch, Request $request) : Response {
-        return $this->renderer->renderView('user.phtml', $routeMatch->getRequestAttributes());
-    } */
+    public function addUsers (RouteMatch $routeMatch, Request $request)
+    {
+
+        return $this->renderer->renderView('admin-user-details.html', []);
+    }
+
+    public function add (RouteMatch $routeMatch, Request $request)
+    {
+        $data = $request->getParameters();
+        $this->userService->addUser($data);
+        $location = "Location: http://local.quizapp.com/admin/user";
+        $body = Stream::createFromString("");
+
+        return new Response($body, '1.1', '301', $location);
+    }
+
+    public function delete (RouteMatch $routeMatch, Request $request)
+    {
+        $id = $routeMatch->getRequestAttributes()['id'];
+        $this->userService->deleteUser($id);
+        $location = "Location: http://local.quizapp.com/admin/user";
+
+        $body = Stream::createFromString("");
+        return new Response($body, '1.1', '301', $location);
+    }
+
+    public function editUser (RouteMatch $routeMatch, Request $request)
+    {
+        $id = $routeMatch->getRequestAttributes()['id'];
+        $user = $this->userService->getUser($id);
+
+        return $this->renderer->renderView('admin-user-edit-details.html', ['user' => $user]);
+    }
+
+    public function edit (RouteMatch $routeMatch, Request $request)
+    {
+        $id = $routeMatch->getRequestAttributes()['id'];
+        $data = $request->getParameters();
+        $this->userService->editUser($id, $data);
+
+        $location = "Location: http://local.quizapp.com/admin/user";
+
+        $body = Stream::createFromString("");
+        return new Response($body, '1.1', '301', $location);
+    }
 }

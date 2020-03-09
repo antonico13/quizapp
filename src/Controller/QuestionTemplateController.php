@@ -26,7 +26,7 @@ class QuestionTemplateController extends AbstractController
     public function add (RouteMatch $routeMatch, Request $request) {
         $data = $request->getParameters();
         $this->questionService->addQuestion($data);
-        $location = "Location: http://local.quizapp.com/admin/questions";
+        $location = "Location: http://local.quizapp.com/admin/question";
 
         $body = Stream::createFromString("");
         return new Response($body, '1.1', '301', $location);
@@ -35,7 +35,7 @@ class QuestionTemplateController extends AbstractController
     public function delete (RouteMatch $routeMatch, Request $request) {
         $id = $routeMatch->getRequestAttributes()['id'];
         $this->questionService->deleteQuestion($id);
-        $location = "Location: http://local.quizapp.com/admin/questions";
+        $location = "Location: http://local.quizapp.com/admin/question";
 
         $body = Stream::createFromString("");
         return new Response($body, '1.1', '301', $location);
@@ -46,7 +46,7 @@ class QuestionTemplateController extends AbstractController
         $data = $request->getParameters();
         $this->questionService->editQuestion($id, $data);
 
-        $location = "Location: http://local.quizapp.com/admin/questions";
+        $location = "Location: http://local.quizapp.com/admin/question";
 
         $body = Stream::createFromString("");
         return new Response($body, '1.1', '301', $location);

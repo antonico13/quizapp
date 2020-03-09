@@ -78,4 +78,8 @@ class User extends AbstractEntity
         return $this->getRepository()->getForeignEntities(Quiz::class, $this);
     }
 
+    public function setPassword(string $hash) {
+        $this->password = $hash;
+    }
+
 }

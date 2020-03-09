@@ -55,17 +55,60 @@ return [
             ],
             'admin_get_quizzes' => [
                 Router::CONFIG_KEY_METHOD => 'GET',
-                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_CONTROLLER => 'quizTemplate',
                 Router::CONFIG_KEY_ACTION => 'getQuizzes',
-                Router::CONFIG_KEY_PATH => '/admin/quizzes',
+                Router::CONFIG_KEY_PATH => '/admin/quiz',
                 Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'add_quizzes_page' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'quizTemplate',
+                Router::CONFIG_KEY_ACTION => 'addQuizzes',
+                Router::CONFIG_KEY_PATH => '/admin/quiz/add',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'add_quiz' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'quizTemplate',
+                Router::CONFIG_KEY_ACTION => 'add',
+                Router::CONFIG_KEY_PATH => '/admin/quiz/add',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'delete_quiz' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'quizTemplate',
+                Router::CONFIG_KEY_ACTION => 'delete',
+                Router::CONFIG_KEY_PATH => '/admin/quiz/delete/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
+                ]
+            ],
+            'edit_quizzes_page' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'quizTemplate',
+                Router::CONFIG_KEY_ACTION => 'editQuizzes',
+                Router::CONFIG_KEY_PATH => '/admin/quiz/edit/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
+                ]
+            ],
+            'edit_quiz' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'quizTemplate',
+                Router::CONFIG_KEY_ACTION => 'edit',
+                Router::CONFIG_KEY_PATH => '/admin/quiz/edit/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
                 ]
             ],
             'get_questions' => [
                 Router::CONFIG_KEY_METHOD => 'GET',
                 Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
                 Router::CONFIG_KEY_ACTION => 'getQuestions',
-                Router::CONFIG_KEY_PATH => '/admin/questions',
+                Router::CONFIG_KEY_PATH => '/admin/question',
                 Router::CONFIG_KEY_ATTRIBUTES => [
                 ]
             ],
@@ -73,7 +116,7 @@ return [
                 Router::CONFIG_KEY_METHOD => 'GET',
                 Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
                 Router::CONFIG_KEY_ACTION => 'addQuestions',
-                Router::CONFIG_KEY_PATH => '/admin/questions/add',
+                Router::CONFIG_KEY_PATH => '/admin/question/add',
                 Router::CONFIG_KEY_ATTRIBUTES => [
                 ]
             ],
@@ -81,7 +124,7 @@ return [
                 Router::CONFIG_KEY_METHOD => 'POST',
                 Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
                 Router::CONFIG_KEY_ACTION => 'add',
-                Router::CONFIG_KEY_PATH => '/admin/questions/add',
+                Router::CONFIG_KEY_PATH => '/admin/question/add',
                 Router::CONFIG_KEY_ATTRIBUTES => [
                 ]
             ],
@@ -89,7 +132,7 @@ return [
                 Router::CONFIG_KEY_METHOD => 'GET',
                 Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
                 Router::CONFIG_KEY_ACTION => 'delete',
-                Router::CONFIG_KEY_PATH => '/admin/questions/delete/{id}',
+                Router::CONFIG_KEY_PATH => '/admin/question/delete/{id}',
                 Router::CONFIG_KEY_ATTRIBUTES => [
                     'id' => '\d+'
                 ]
@@ -98,7 +141,7 @@ return [
                 Router::CONFIG_KEY_METHOD => 'GET',
                 Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
                 Router::CONFIG_KEY_ACTION => 'editQuestion',
-                Router::CONFIG_KEY_PATH => '/admin/questions/edit/{id}',
+                Router::CONFIG_KEY_PATH => '/admin/question/edit/{id}',
                 Router::CONFIG_KEY_ATTRIBUTES => [
                     'id' => '\d+'
                 ]
@@ -107,7 +150,58 @@ return [
                 Router::CONFIG_KEY_METHOD => 'POST',
                 Router::CONFIG_KEY_CONTROLLER => 'questionTemplate',
                 Router::CONFIG_KEY_ACTION => 'edit',
-                Router::CONFIG_KEY_PATH => '/admin/questions/edit/{id}',
+                Router::CONFIG_KEY_PATH => '/admin/question/edit/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
+                ]
+            ],
+            'get_users' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'getUsers',
+                Router::CONFIG_KEY_PATH => '/admin/user',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'add_users_page' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'addUsers',
+                Router::CONFIG_KEY_PATH => '/admin/user/add',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'add_user' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'add',
+                Router::CONFIG_KEY_PATH => '/admin/user/add',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'delete_user' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'delete',
+                Router::CONFIG_KEY_PATH => '/admin/user/delete/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
+                ]
+            ],
+            'edit_users_page' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'editUser',
+                Router::CONFIG_KEY_PATH => '/admin/user/edit/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
+                ]
+            ],
+            'edit_user' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'user',
+                Router::CONFIG_KEY_ACTION => 'edit',
+                Router::CONFIG_KEY_PATH => '/admin/user/edit/{id}',
                 Router::CONFIG_KEY_ATTRIBUTES => [
                     'id' => '\d+'
                 ]

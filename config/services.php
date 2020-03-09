@@ -10,6 +10,7 @@ use Framework\Renderer\Renderer;
 use Framework\Router\Router;
 use Framework\Session\Session;
 use Quizapp\Controller\QuestionTemplateController;
+use Quizapp\Controller\QuizTemplateController;
 use Quizapp\Controller\UserController;
 use Quizapp\Entity\QuestionTemplate;
 use Quizapp\Entity\QuizInstance;
@@ -19,6 +20,7 @@ use Quizapp\Repository\QuestionTemplateRepository;
 use Quizapp\Repository\QuizTemplateRepository;
 use Quizapp\Repository\UserRepository;
 use Quizapp\Service\QuestionTemplateService;
+use Quizapp\Service\QuizTemplateService;
 use Quizapp\Service\UserService;
 use ReallyOrm\Hydrator\HydratorInterface;
 use ReallyOrm\Repository\RepositoryInterface;
@@ -97,6 +99,16 @@ $container->register(QuestionTemplateController::class,QuestionTemplateControlle
     ->addArgument(new Reference(RendererInterface::class))
     ->addArgument(new Reference(QuestionTemplateService::class))
     ->addTag('controller');
+
+$container->register(QuizTemplateService::class, QuizTemplateService::class)
+    ->addArgument(new Reference(QuizTemplateRepository::class))
+    ->addArgument(new Reference(SessionInterface::class));
+
+$container->register(QuizTemplateController::class,QuizTemplateController::class)
+    ->addArgument(new Reference(RendererInterface::class))
+    ->addArgument(new Reference(QuizTemplateService::class))
+    ->addTag('controller');
+
 
 
 $container->setParameter('controllerNamespace', $config['dispatcher']['controllerNamespace']);
