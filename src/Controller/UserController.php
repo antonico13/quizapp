@@ -3,6 +3,7 @@
 namespace Quizapp\Controller;
 
 use Framework\Contracts\RendererInterface;
+use Framework\Contracts\SessionInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
 use Framework\Http\Request;
@@ -20,16 +21,21 @@ class UserController extends AbstractController
      * @var ServiceInterface
      */
     private $userService;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
     /**
      * UserController constructor.
      * @param RendererInterface $renderer
      * @param ServiceInterface $userService
      */
-    public function __construct (RendererInterface $renderer, ServiceInterface $userService)
+    public function __construct (RendererInterface $renderer, ServiceInterface $userService, SessionInterface $session)
     {
         parent::__construct($renderer);
         $this->userService = $userService;
+        $this->session = $session;
     }
 
     public function getLogin (RouteMatch $routeMatch, Request $request)
@@ -41,7 +47,15 @@ class UserController extends AbstractController
     {
         $email = $request->getParameter('email');
         $password = hash('sha256', $request->getParameter('password'));
-        $location =  'Location: http://local.quizapp.com/'.$this->userService->login($email, $password);
+
+        $data = $this->userService->login($email, $password);
+
+        if ($data) {
+            $location =  'Location: http://local.quizapp.com/'.$data[0];
+            $this->session->set('id', $data[1]);
+            $this->session->set('role', $data[0]);
+            $this->session->set('name', $data[2]);
+        }
 
         $body = Stream::createFromString("");
         return new Response($body, '1.1', '301', $location);
@@ -49,24 +63,26 @@ class UserController extends AbstractController
 
     public function getHomepage (RouteMatch $routeMatch, Request $request)
     {
-        $name = $this->userService->getName();
+        $name = $this->session->get('name');
 
-        return $this->renderer->renderView('candidate-quiz-listing.html', ['name' => $name]);
+        return $this->renderer->renderView('candidate-quiz-listing.phtml', ['name' => $name]);
     }
 
     public function getDashboard (RouteMatch $routeMatch, Request $request)
     {
-        $name = $this->userService->getName();
+        $name = $this->session->get('name');
 
         return $this->renderer->renderView('admin-dashboard.html', ['name' => $name]);
     }
 
     public function logout (RouteMatch $routeMatch, Request $request)
     {
-        $this->userService->logout();
+        $this->session->destroy();
         $location = 'Location: http://local.quizapp.com/';
 
         $body = Stream::createFromString("");
+        /*$response =  (new Response($body, '1.1', '301', $location))
+            ->withAddedHeader() */
         return new Response($body, '1.1', '301', $location);
     }
 

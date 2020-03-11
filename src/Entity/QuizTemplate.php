@@ -10,15 +10,7 @@ class QuizTemplate extends AbstractEntity
     /**
      * @var int
      * @ORM id
-     * @UID    public function edit (RouteMatch $routeMatch, Request $request) {
-        $id = $routeMatch->getRequestAttributes()['id'];
-        $data = $request->getParameters();
-        $this->questionService->editQuestion($id, $data);
-
-        $location = "Location: http://local.quizapp.com/admin/question";
-
-        $body = Stream::createFromString("");
-        return new Response($body, '1.1', '301', $location);
+     * @UID
     }
      */
     private $id;
@@ -57,4 +49,7 @@ class QuizTemplate extends AbstractEntity
         return $this->getRepository()->countQuestions($this->getId());
     }
 
+    public function getQuestions(int $id) {
+        return $this->getRepository()->getQuestions($id);
+    }
 }

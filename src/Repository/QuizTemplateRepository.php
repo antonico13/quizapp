@@ -9,31 +9,37 @@ use ReallyOrm\Repository\AbstractRepository;
 
 class QuizTemplateRepository extends AbstractRepository
 {
-    public function countBy (int $id) {
-        $sql = 'SELECT COUNT(*) FROM '.$this->getTableName().' WHERE ';
-        $sql .= ' userid = :userid';
-
-        //var_dump($sql);
-
+    public function countBy (?int $id) {
+        $sql = 'SELECT COUNT(*) FROM '.$this->getTableName();
+        if ($id) {
+            $sql .= ' WHERE userid = :userid';
+        }
         $stm = $this->pdo->prepare($sql);
 
-        $stm->bindValue(':userid', $id);
-
+        if ($id) {
+            $stm->bindValue(':userid', $id);
+        }
         $stm->execute();
 
         return $stm->fetch()['COUNT(*)'];
     }
 
-    public function countBySearch (int $id, string $search) {
+    public function countBySearch (?int $id, string $search) {
         $search = '%'.$search.'%';
         $sql = 'SELECT COUNT(*) FROM '.$this->getTableName().' WHERE ';
-        $sql .= ' userid = :userid AND name LIKE :search';
-
+        if ($id) {
+            $sql .= ' userid = :userid AND ';
+        }
         //var_dump($sql);
+
+        $sql .= 'name LIKE :search';
 
         $stm = $this->pdo->prepare($sql);
 
-        $stm->bindValue(':userid', $id);
+        if ($id) {
+            $stm->bindValue(':userid', $id);
+        }
+
         $stm->bindValue(':search', $search);
 
         $stm->execute();
@@ -91,7 +97,7 @@ class QuizTemplateRepository extends AbstractRepository
     public function insertOnLinkTable(EntityInterface $quiz, array $ids) {
         $quizid = $quiz->getId();
         foreach ($ids as $id) {
-            $sql = 'INSERT INTO quizquestiontemplate (quiztemplateid, questiontemplateid) VALUES (:quizid, :questionid)';
+            $sql = 'INSERT INTO quizquestion (quiztemplateid, questiontemplateid) VALUES (:quizid, :questionid)';
             $stm = $this->pdo->prepare($sql);
             $stm->bindValue(':quizid', $quizid);
             $stm->bindValue(':questionid', $id);
@@ -124,13 +130,29 @@ class QuizTemplateRepository extends AbstractRepository
     }
 
     public function countQuestions(int $id) {
-        $sql = 'SELECT COUNT(*) FROM quizquestiontemplate WHERE quiztemplateid = :quizid';
+        $sql = 'SELECT COUNT(*) FROM quizquestion WHERE quiztemplateid = :quizid';
 
         $stm = $this->pdo->prepare($sql);
         $stm->bindParam(':quizid', $id);
         $stm->execute();
 
         return $stm->fetch()['COUNT(*)'];
+    }
+
+    public function getQuestions(int $id) {
+        $sql = 'SELECT * FROM quizquestion WHERE quiztemplateid = :quizid';
+        $stm = $this->pdo->prepare($sql);
+        $stm->bindParam(':quizid', $id);
+        $stm->execute();
+
+        return $stm->fetchAll();
+    }
+
+    public function deleteRelation(int $quizTemplateID) {
+        $sql = 'DELETE FROM quizquestion WHERE quiztemplateid = :quizid';
+        $stm = $this->pdo->prepare($sql);
+        $stm->bindParam(':quizid', $quizTemplateID);
+        $stm->execute();
     }
 
 }

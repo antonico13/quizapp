@@ -4,8 +4,9 @@
 namespace Quizapp\Entity;
 
 use ReallyOrm\Entity\AbstractEntity;
+use ReallyOrm\Entity\EntityInterface;
 
-class QuestionInstance extends AbstractEntity
+class QuestionInstance extends AbstractEntity implements TemplatedInterface
 {
     /**
      * @var int
@@ -25,7 +26,46 @@ class QuestionInstance extends AbstractEntity
     private $type;
     /**
      * @var bool
-     * @ORM isAnswered
+     * @ORM isanswered
      */
-    private $isAnswered;
+    private $isanswered;
+
+    public function setText(string $text) {
+        $this->text = $text;
+    }
+
+    public function getText() {
+        return $this->text;
+    }
+
+    public function getID() {
+        return $this->id;
+    }
+
+    public function setType(string $type) {
+        $this->type = $type;
+    }
+
+    public function getType() {
+        return $this->type;
+    }
+
+    public function setTemplateID($templateId) {
+        $this->getRepository()->setForeignTemplate($templateId, $this);
+    }
+
+    public function setQuizID($qId) {
+        $this->getRepository()->setForeignQuiz($qId, $this);
+    }
+
+    public static function createFromTemplate(EntityInterface $template) : EntityInterface {
+        $obj = new self();
+        $obj->setText($template->getText());
+        $obj->setType($template->getType());
+        return $obj;
+    }
+
+    public function getAnswers() {
+        return $this->getRepository()->getForeignEntities(TextInstance::class, $this);
+    }
 }

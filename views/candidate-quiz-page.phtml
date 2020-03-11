@@ -20,7 +20,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <!--Custom css-->
-    <link rel="stylesheet" href="../public/assets/css/custom-css.css">
+    <link rel="stylesheet" href="/assets/css/custom-css.css">
 
     <title>Candidate - Quiz page</title>
 </head>
@@ -32,13 +32,13 @@
         <nav class="my-2 my-md-0 mr-md-3">
             <span class="p-2 text-dark">Hello, Candidate name!</span>
         </nav>
-        <a class="btn btn-danger" href="#">Logout</a>
+        <a class="btn btn-danger" href="/logout">Logout</a>
     </div>
 
     <!--Breadcrumbs-->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb px-3 py-0 mb-3">
-            <li class="breadcrumb-item" ><a href="#">Dashboard</a></li>
+            <li class="breadcrumb-item" ><a href="/user">Dashboard</a></li>
             <li class="breadcrumb-item active" aria-current="page">Quiz page</li>
         </ol>
     </nav>
@@ -51,15 +51,23 @@
 
         <!--Quiz form-->
         <div class="">
-            <p class="font-weight-bold">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ac efficitur dolor. Morbi sed dictum felis, ac pharetra nulla. Morbi sit amet sollicitudin tellus, maximus molestie tellus ?</p>
+            <p class="font-weight-bold"><?php echo $question->getText() ?></p>
         </div>
-        <form>
+        <form action = "" method="get">
+            <?php foreach($answers as $answer): ?>
             <div class="form-group">
-                <textarea class="form-control" id="questionResponse" placeholder="Question response"></textarea>
+                <textarea class="form-control" id="questionResponse" name = "answer" placeholder="Question response"><?php echo $answer->getText() ?></textarea>
             </div>
+            <?php endforeach ?>
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Next</button> /
-                <button type="submit" class="btn btn-primary">Save</button>
+                <?php if ($questionNumber+1 > 1):?>
+                <button type="submit" class="btn btn-primary" formaction="/user/quiz/question/<?php echo $questionNumber?>">Previous</button> /
+                <?php endif ?>
+                <?php if ($questionNumber+1 == $count):?>
+                    <button type="submit" class="btn btn-primary" formmethod="post" formaction="/answer/save/<?php echo $answer->getID()?>">Save</button>
+                <?php else: ?>
+                <button type="submit" class="btn btn-primary" formmethod="post" formaction="/answer/next/<?php echo $answer->getID()?>/<?php echo $questionNumber+2?>">Next</button>
+                <?php endif ?>
             </div>
         </form>
     </div>

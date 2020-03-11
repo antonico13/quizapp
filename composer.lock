@@ -937,12 +937,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ToniCodrea/ORM.git",
-                "reference": "d9921b61086837b1bb89fb86d78c3479ad603fdd"
+                "reference": "70a08cbb52fb7306b35382d6a1443d09561a1dbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ToniCodrea/ORM/zipball/d9921b61086837b1bb89fb86d78c3479ad603fdd",
-                "reference": "d9921b61086837b1bb89fb86d78c3479ad603fdd",
+                "url": "https://api.github.com/repos/ToniCodrea/ORM/zipball/70a08cbb52fb7306b35382d6a1443d09561a1dbd",
+                "reference": "70a08cbb52fb7306b35382d6a1443d09561a1dbd",
                 "shasum": ""
             },
             "require": {
@@ -969,7 +969,7 @@
                 "source": "https://github.com/ToniCodrea/ORM/tree/master",
                 "issues": "https://github.com/ToniCodrea/ORM/issues"
             },
-            "time": "2020-03-05T17:49:04+00:00"
+            "time": "2020-03-11T11:18:38+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

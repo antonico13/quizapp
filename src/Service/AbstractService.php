@@ -7,16 +7,17 @@ namespace Quizapp\Service;
 use Framework\Contracts\SessionInterface;
 use Quizapp\Contracts\ServiceInterface;
 use ReallyOrm\Repository\RepositoryInterface;
+use ReallyOrm\Repository\RepositoryManagerInterface;
 
 class AbstractService implements ServiceInterface
 {
+    protected $repoManager;
     protected $entityRepo;
-    protected $session;
 
-    public function __construct(RepositoryInterface $entityRepo, SessionInterface $session)
+    public function __construct(RepositoryManagerInterface $repoManager, RepositoryInterface $entityRepo)
     {
+        $this->repoManager = $repoManager;
         $this->entityRepo = $entityRepo;
-        $this->session = $session;
     }
 
 }

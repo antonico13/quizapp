@@ -9,7 +9,7 @@ use Framework\Controller\AbstractController;
 class ResultsController extends AbstractController
 {
     public function getResults() {
-        $this->renderer->renderView('admin-results.html', []);
+        $this->renderer->renderView('admin-results.phtml', []);
     }
 
 }

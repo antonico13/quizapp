@@ -23,11 +23,6 @@ class QuestionTemplate extends AbstractEntity
      * @ORM text
      */
     private $text;
-    /**
-     * @var int
-     * @ORM userid
-     */
-    private $userid;
 
     public function setText($text) {
         $this->text = $text;
@@ -38,7 +33,11 @@ class QuestionTemplate extends AbstractEntity
     }
 
     public function setUserID($userId) {
-        $this->userid = $userId;
+        $this->getRepository()->setForeignKey($userId, $this);
+    }
+
+    public function getAnswers() {
+        return $this->getRepository()->getForeignEntities(TextTemplate::class, $this);
     }
 
     public function getText()

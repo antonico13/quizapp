@@ -5,54 +5,59 @@ namespace Quizapp\Service;
 
 
 use Quizapp\Entity\QuestionTemplate;
+use Quizapp\Entity\TextTemplate;
+use ReallyOrm\Entity\EntityInterface;
 
 class QuestionTemplateService extends AbstractService
 {
 
-    public function addQuestion (array $data) {
+    public function addQuestion (array $data, int $userid) {
         $question = new QuestionTemplate();
         $question->setText($data['text']);
         $question->setType($data['type']);
-        $question->setUserID($this->session->get('id'));
+        $this->repoManager->register($question);
+        $question->save();
 
-        $this->entityRepo->insertOnDuplicateKeyUpdate($question);
+        $question->setUserID($userid);
+
+        $answer = new TextTemplate();
+        $answer->setText($data['answer']);
+        $this->repoManager->register($answer);
+        $answer->save();
+
+        $answer->setQuestionID($question->getID());
+
     }
 
-    public function getQuestions(int $page = 1, int $limit = 5) : array
+    public function getQuestions(int $userid, int $page = 1, int $limit = 5) : array
     {
-        $id = $this->session->get('id');
 
-        return $this->entityRepo->findBy(['userid' => $id], ['id' => 'ASC'], ($page-1)*$limit, $limit);
+        return $this->entityRepo->findBy(['userid' => $userid], ['id' => 'ASC'], ($page-1)*$limit, $limit);
     }
 
-    public function getQuestionsCount() : int
+    public function getQuestionsCount(int $userid) : int
     {
-        $id = $this->session->get('id');
-
-        return $this->entityRepo->countBy($id);
+        return $this->entityRepo->countBy($userid);
     }
 
-    public function getQuestionsCountSearch(string $search) : int
+    public function getQuestionsCountSearch(int $userid, string $search) : int
     {
-        $id = $this->session->get('id');
-
-        return $this->entityRepo->countBySearch($id, $search);
+        return $this->entityRepo->countBySearch($userid, $search);
     }
 
-    public function getQuestionsSearch(string $text, int $page = 1, int $limit = 5) : array
+    public function getQuestionsSearch(int $userid, string $text, int $page = 1, int $limit = 5) : array
     {
-        $id = $this->session->get('id');
-
-        return $this->entityRepo->findBySearch(['userid' => $id], ['id' => 'ASC'], ($page-1)*$limit, $limit, $text);
+        return $this->entityRepo->findBySearch(['userid' => $userid], ['id' => 'ASC'], ($page-1)*$limit, $limit, $text);
     }
 
     public function deleteQuestion (int $id)
     {
         $question = $this->entityRepo->find($id);
+        $this->entityRepo->deleteRelation($id);
         $this->entityRepo->delete($question);
     }
 
-    public function getQuestion (int $id) {
+    public function getQuestion (int $id) : ?EntityInterface {
         return $this->entityRepo->find($id);
     }
 
@@ -60,8 +65,14 @@ class QuestionTemplateService extends AbstractService
         $question = $this->getQuestion($id);
         $question->setText($data['text']);
         $question->setType($data['type']);
+        $this->repoManager->register($question);
+        $question->save();
 
-        $this->entityRepo->insertOnDuplicateKeyUpdate($question);
+        $answer = new TextTemplate();
+        $this->repoManager->register($answer);
+        $answer = $answer->findBy($question->getId());
+        $answer->setText($data['answer']);
+        $answer->save();
     }
 
 }

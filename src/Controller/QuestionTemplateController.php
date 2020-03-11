@@ -5,27 +5,31 @@ namespace Quizapp\Controller;
 
 
 use Framework\Contracts\RendererInterface;
+use Framework\Contracts\SessionInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\Request;
 use Framework\Http\Response;
 use Framework\Http\Stream;
 use Framework\Routing\RouteMatch;
 use Quizapp\Contracts\ServiceInterface;
-use SebastianBergmann\Version;
+use Quizapp\Entity\QuestionTemplate;
 
 class QuestionTemplateController extends AbstractController
 {
     private $questionService;
+    private $session;
 
-    public function __construct (RendererInterface $renderer, ServiceInterface $questionService)
+    public function __construct (RendererInterface $renderer, ServiceInterface $questionService, SessionInterface $session)
     {
         parent::__construct($renderer);
         $this->questionService = $questionService;
+        $this->session = $session;
     }
 
     public function add (RouteMatch $routeMatch, Request $request) {
         $data = $request->getParameters();
-        $this->questionService->addQuestion($data);
+        $id = $this->session->get('id');
+        $this->questionService->addQuestion($data, $id);
         $location = "Location: http://local.quizapp.com/admin/question";
 
         $body = Stream::createFromString("");
@@ -53,7 +57,8 @@ class QuestionTemplateController extends AbstractController
     }
 
     public function getQuestions (RouteMatch $routeMatch, Request $request) {
-        $count = $this->questionService->getQuestionsCount();
+        $id = $this->session->get('id');
+        $count = $this->questionService->getQuestionsCount($id);
         $page = $request->getParameter('page');
         $search = $request->getParameter('search');
 
@@ -62,13 +67,13 @@ class QuestionTemplateController extends AbstractController
         }
 
         if ($search) {
-            $count = $this->questionService->getQuestionsCountSearch($search);
+            $count = $this->questionService->getQuestionsCountSearch($id, $search);
         }
 
         $data = $this->questionService->getQuestions($page);
 
         if ($search) {
-            $data = $this->questionService->getQuestionsSearch($search, $page);
+            $data = $this->questionService->getQuestionsSearch($id, $search, $page);
         }
 
         $count = ceil($count/5);
@@ -83,9 +88,13 @@ class QuestionTemplateController extends AbstractController
 
     public function editQuestion (RouteMatch $routeMatch, Request $request) {
         $id = $routeMatch->getRequestAttributes()['id'];
+        /**
+         * @var $question QuestionTemplate
+         */
         $question = $this->questionService->getQuestion($id);
+        $answers = $question->getAnswers();
 
-        return $this->renderer->renderView('admin-question-edit-details.html', ['question' => $question]);
+        return $this->renderer->renderView('admin-question-edit-details.phtml', ['question' => $question, 'answer' => $answers[0]]);
     }
 
 }

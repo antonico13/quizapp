@@ -4,6 +4,7 @@
 namespace Quizapp\Repository;
 
 
+use ReallyOrm\Entity\EntityInterface;
 use ReallyOrm\Repository\AbstractRepository;
 
 class QuestionTemplateRepository extends AbstractRepository
@@ -87,4 +88,23 @@ class QuestionTemplateRepository extends AbstractRepository
         return $stm->fetch()['COUNT(*)'];
     }
 
+    public function setForeignKey(int $uid_fk, EntityInterface $target): bool
+    {
+        $uid = $this->hydrator->getId($target);
+
+        $sql = 'UPDATE '.$this->getTableName().' SET userid = :fkID WHERE '.$uid[0].' = :entityID';
+
+        $stm = $this->pdo->prepare($sql);
+        $stm->bindParam(':fkID', $uid_fk);
+        $stm->bindParam(':entityID', $uid[1]);
+
+        return $stm->execute();
+    }
+
+    public function deleteRelation(int $questionTemplateID) {
+        $sql = 'DELETE FROM quizquestion WHERE questiontemplateid = :questionid';
+        $stm = $this->pdo->prepare($sql);
+        $stm->bindParam(':questiond', $questionTemplateID);
+        $stm->execute();
+    }
 }

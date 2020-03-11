@@ -56,50 +56,30 @@
         </div>
 
         <!--Quiz block-->
+        <?php $i = 0 ?>
+        <?php foreach($questionsAnswers['questions'] as $questions):?>
         <div class="card border-secondary mb-3">
             <div class="card-header">
                 <p class="mb-1">Question: </p>
                 <span>
-                    Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.
+                   <?php echo $questions->getText() ?>
                 </span>
             </div>
+            <?php foreach($questionsAnswers['answers'][$i] as $answer):?>
             <div class="card-body">
                 <p class="mb-1">Answer: </p>
-                <span>Some quick example text to build on the card title and make up the bulk of the card's content.</span>
+                <span><?php echo $answer->getText() ?></span>
             </div>
+            <?php endforeach ?>
         </div>
-
-        <div class="card border-secondary mb-3">
-            <div class="card-header">
-                <p class="mb-1">Question: </p>
-                <span>
-                    Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.
-                </span>
-            </div>
-            <div class="card-body">
-                <p class="mb-1">Answer: </p>
-                <span>Some quick example text to build on the card title and make up the bulk of the card's content.</span>
-            </div>
-        </div>
-
-        <div class="card border-secondary mb-3">
-            <div class="card-header">
-                <p class="mb-1">Question: </p>
-                <span>
-                    Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.
-                </span>
-            </div>
-            <div class="card-body">
-                <p class="mb-1">Answer: </p>
-                <span>Some quick example text to build on the card title and make up the bulk of the card's content.</span>
-            </div>
-        </div>
+        <?php $i++ ?>
+        <?php endforeach ?>
 
         <!--Results form-->
-        <form>
+        <form action="/admin/results/<?php echo $quizInstance->getID() ?>" method="post">
             <div class="form-group">
                 <label for="quizScore">Score</label>
-                <input type="number" class="form-control" id="quizScore" placeholder="Quiz score">
+                <input type="number" class="form-control" id="quizScore" name = "score" >
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Save</button>

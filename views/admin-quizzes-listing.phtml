@@ -91,7 +91,7 @@
                     <td> <?php echo $datum->getQuestionNumber() ?></td>
                     <td class="text-center">
                         <a class="btn btn-primary py-1" href="/admin/quiz/edit/<?php echo $datum->getID() ?>">Edit</a>
-                        <a class="btn btn-danger py-1" href="#">Delete</a>
+                        <a class="btn btn-danger py-1" href="/admin/quiz/delete/<?php echo $datum->getID() ?>">Delete</a>
                     </td>
                 </tr>
                 <?php endforeach ?>

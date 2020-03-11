@@ -9,18 +9,33 @@ use Framework\Dispatcher\Dispatcher;
 use Framework\Renderer\Renderer;
 use Framework\Router\Router;
 use Framework\Session\Session;
+use Quizapp\Controller\QuestionInstanceController;
 use Quizapp\Controller\QuestionTemplateController;
+use Quizapp\Controller\QuizInstanceController;
 use Quizapp\Controller\QuizTemplateController;
+use Quizapp\Controller\TextInstanceController;
+use Quizapp\Controller\TextTemplateController;
 use Quizapp\Controller\UserController;
+use Quizapp\Entity\QuestionInstance;
 use Quizapp\Entity\QuestionTemplate;
 use Quizapp\Entity\QuizInstance;
 use Quizapp\Entity\QuizTemplate;
+use Quizapp\Entity\TextInstance;
+use Quizapp\Entity\TextTemplate;
 use Quizapp\Entity\User;
+use Quizapp\Repository\QuestionInstanceRepository;
 use Quizapp\Repository\QuestionTemplateRepository;
+use Quizapp\Repository\QuizInstanceRepository;
 use Quizapp\Repository\QuizTemplateRepository;
+use Quizapp\Repository\TextInstanceRepository;
+use Quizapp\Repository\TextTemplateRepository;
 use Quizapp\Repository\UserRepository;
+use Quizapp\Service\QuestionInstanceService;
 use Quizapp\Service\QuestionTemplateService;
+use Quizapp\Service\QuizInstanceService;
 use Quizapp\Service\QuizTemplateService;
+use Quizapp\Service\TextInstanceService;
+use Quizapp\Service\TextTemplateService;
 use Quizapp\Service\UserService;
 use ReallyOrm\Hydrator\HydratorInterface;
 use ReallyOrm\Repository\RepositoryInterface;
@@ -67,6 +82,31 @@ $container->register(QuestionTemplateRepository::class, QuestionTemplateReposito
     ->addArgument(new Reference(HydratorInterface::class))
     ->addTag('repository');
 
+$container->register(TextTemplateRepository::class, TextTemplateRepository::class)
+    ->addArgument(new Reference(PDO::class))
+    ->addArgument(TextTemplate::class)
+    ->addArgument(new Reference(HydratorInterface::class))
+    ->addTag('repository');
+
+$container->register(QuizInstanceRepository::class, QuizInstanceRepository::class)
+    ->addArgument(new Reference(PDO::class))
+    ->addArgument(QuizInstance::class)
+    ->addArgument(new Reference(HydratorInterface::class))
+    ->addTag('repository');
+
+$container->register(QuestionInstanceRepository::class, QuestionInstanceRepository::class)
+    ->addArgument(new Reference(PDO::class))
+    ->addArgument(QuestionInstance::class)
+    ->addArgument(new Reference(HydratorInterface::class))
+    ->addTag('repository');
+
+$container->register(TextInstanceRepository::class, TextInstanceRepository::class)
+    ->addArgument(new Reference(PDO::class))
+    ->addArgument(TextInstance::class)
+    ->addArgument(new Reference(HydratorInterface::class))
+    ->addTag('repository');
+
+
 $repoManager = $container->getDefinition(RepositoryManagerInterface::class);
 foreach ($container->findTaggedServiceIds('repository') as $id => $value) {
     $repository = $container->getDefinition($id);
@@ -83,30 +123,74 @@ $container->register(RendererInterface::class, Renderer::class)
 $container->register(SessionInterface::class, Session::class);
 
 $container->register(UserService::class, UserService::class)
-        ->addArgument(new Reference(UserRepository::class))
-        ->addArgument(new Reference(SessionInterface::class));
+        ->addArgument(new Reference(RepositoryManagerInterface::class))
+        ->addArgument(new Reference(UserRepository::class));
 
 $container->register(UserController::class,UserController::class)
     ->addArgument(new Reference(RendererInterface::class))
     ->addArgument(new Reference(UserService::class))
+    ->addArgument(new Reference(SessionInterface::class))
     ->addTag('controller');
 
 $container->register(QuestionTemplateService::class, QuestionTemplateService::class)
-    ->addArgument(new Reference(QuestionTemplateRepository::class))
-    ->addArgument(new Reference(SessionInterface::class));
+    ->addArgument(new Reference(RepositoryManagerInterface::class))
+    ->addArgument(new Reference(QuestionTemplateRepository::class));
 
 $container->register(QuestionTemplateController::class,QuestionTemplateController::class)
     ->addArgument(new Reference(RendererInterface::class))
     ->addArgument(new Reference(QuestionTemplateService::class))
+    ->addArgument(new Reference(SessionInterface::class))
     ->addTag('controller');
 
 $container->register(QuizTemplateService::class, QuizTemplateService::class)
-    ->addArgument(new Reference(QuizTemplateRepository::class))
-    ->addArgument(new Reference(SessionInterface::class));
+    ->addArgument(new Reference(RepositoryManagerInterface::class))
+    ->addArgument(new Reference(QuizTemplateRepository::class));
 
 $container->register(QuizTemplateController::class,QuizTemplateController::class)
     ->addArgument(new Reference(RendererInterface::class))
     ->addArgument(new Reference(QuizTemplateService::class))
+    ->addArgument(new Reference(SessionInterface::class))
+    ->addTag('controller');
+
+$container->register(TextTemplateService::class, TextTemplateService::class)
+    ->addArgument(new Reference(RepositoryManagerInterface::class))
+    ->addArgument(new Reference(TextTemplateRepository::class));
+
+$container->register(TextTemplateController::class,TextTemplateController::class)
+    ->addArgument(new Reference(RendererInterface::class))
+    ->addArgument(new Reference(TextTemplateService::class))
+    ->addArgument(new Reference(SessionInterface::class))
+    ->addTag('controller');
+
+$container->register(QuestionInstanceService::class, QuestionInstanceService::class)
+    ->addArgument(new Reference(RepositoryManagerInterface::class))
+    ->addArgument(new Reference(QuestionInstanceRepository::class));
+
+
+$container->register(QuestionInstanceController::class,QuestionInstanceController::class)
+    ->addArgument(new Reference(RendererInterface::class))
+    ->addArgument(new Reference(QuestionInstanceService::class))
+    ->addArgument(new Reference(SessionInterface::class))
+    ->addTag('controller');
+
+$container->register(QuizInstanceService::class, QuizInstanceService::class)
+    ->addArgument(new Reference(RepositoryManagerInterface::class))
+    ->addArgument(new Reference(QuizInstanceRepository::class));
+
+$container->register(QuizInstanceController::class,QuizInstanceController::class)
+    ->addArgument(new Reference(RendererInterface::class))
+    ->addArgument(new Reference(QuizInstanceService::class))
+    ->addArgument(new Reference(SessionInterface::class))
+    ->addTag('controller');
+
+$container->register(TextInstanceService::class, TextInstanceService::class)
+    ->addArgument(new Reference(RepositoryManagerInterface::class))
+    ->addArgument(new Reference(TextInstanceRepository::class));
+
+$container->register(TextInstanceController::class,TextInstanceController::class)
+    ->addArgument(new Reference(RendererInterface::class))
+    ->addArgument(new Reference(TextInstanceService::class))
+    ->addArgument(new Reference(SessionInterface::class))
     ->addTag('controller');
 
 

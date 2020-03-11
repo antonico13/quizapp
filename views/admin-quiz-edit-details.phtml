@@ -22,7 +22,7 @@
     <!--Custom css-->
     <link rel="stylesheet" href="assets/css/custom-css.css">
 
-    <title>Admin - Question details</title>
+    <title>Admin - Quiz details</title>
 </head>
 
 <body>
@@ -39,32 +39,36 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb px-3 py-0 mb-3">
         <li class="breadcrumb-item" ><a href="/admin">Dashboard</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Question details</li>
+        <li class="breadcrumb-item active" aria-current="page">Quiz details</li>
     </ol>
 </nav>
 
 <div class="container">
     <!--Page title block-->
     <div class="text-center">
-        <h1>Edit question</h1>
+        <h1>Edit quiz</h1>
     </div>
 
-    <!--Question details form-->
-    <form action = "" method="post">
+    <!--Quiz details form-->
+    <form action="" method="post">
         <div class="form-group">
-            <label for="questionText">Question text</label>
-            <textarea class="form-control" id="questionText" name = "text" placeholder= "" > <?php echo $question->getText() ?> </textarea>
+            <label for="quizName">Name</label>
+            <input type="text" class="form-control" id="quizName" name = "name" placeholder="" value="<?php echo $quiz->getName() ?>">
         </div>
         <div class="form-group">
-            <label for="quizzes">Type</label>
-            <select class="form-control" id="quizzes" name = "type">
-                <option value="Text">Text</option>
-                <option value="Multiple Choice">Multiple Choice</option>
-                <option value="Diagram">Diagram</option>
+            <label for="quizDescription">Description</label>
+            <input type="text" class="form-control" id="quizDescription" name = "text" placeholder="" value="<?php echo $quiz->getText() ?>">
+        </div>
+        <div class="form-group">
+            <label for="quizQuestions">Questions</label>
+            <select class="form-control" id="quizQuestions" name = "questions[]" multiple>
+                <?php foreach ($questions as $question): ?>
+                <option value="<?php echo $question->getID() ?>"> <?php echo $question->getText() ?> </option>
+                <?php endforeach ?>
             </select>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-primary">Save question</button>
+            <button type="submit" class="btn btn-primary">Save quiz</button>
         </div>
     </form>
 </div>

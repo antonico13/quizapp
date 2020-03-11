@@ -15,10 +15,28 @@ return [
         'routes' => [
             'user_homepage' => [
                 Router::CONFIG_KEY_METHOD => 'GET',
-                Router::CONFIG_KEY_CONTROLLER => 'user',
-                Router::CONFIG_KEY_ACTION => 'getHomepage',
+                Router::CONFIG_KEY_CONTROLLER => 'quizTemplate',
+                Router::CONFIG_KEY_ACTION => 'getAllQuizzes',
                 Router::CONFIG_KEY_PATH => '/user',
                 Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'user_quiz' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'quizInstance',
+                Router::CONFIG_KEY_ACTION => 'getQuiz',
+                Router::CONFIG_KEY_PATH => '/user/quiz/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
+                ]
+            ],
+            'user_question' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'questionInstance',
+                Router::CONFIG_KEY_ACTION => 'getQuestion',
+                Router::CONFIG_KEY_PATH => '/user/quiz/question/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
                 ]
             ],
             'admin_dashboard' => [
@@ -206,12 +224,65 @@ return [
                     'id' => '\d+'
                 ]
             ],
-            'get_results' => [
+            'answer_next' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'textInstance',
+                Router::CONFIG_KEY_ACTION => 'next',
+                Router::CONFIG_KEY_PATH => '/answer/next/{id}/{next}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+',
+                    'next' => '\d+'
+                ]
+            ],
+            'answer_save' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'textInstance',
+                Router::CONFIG_KEY_ACTION => 'save',
+                Router::CONFIG_KEY_PATH => '/answer/save/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
+                ]
+            ],
+            'get_review' => [
                 Router::CONFIG_KEY_METHOD => 'GET',
-                Router::CONFIG_KEY_CONTROLLER => 'results',
-                Router::CONFIG_KEY_ACTION => 'getResults',
+                Router::CONFIG_KEY_CONTROLLER => 'quizInstance',
+                Router::CONFIG_KEY_ACTION => 'getReview',
+                Router::CONFIG_KEY_PATH => '/user/quiz/review',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'save_quiz' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'quizInstance',
+                Router::CONFIG_KEY_ACTION => 'saveQuiz',
+                Router::CONFIG_KEY_PATH => '/user/quiz/save',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'get_result_listing' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'quizInstance',
+                Router::CONFIG_KEY_ACTION => 'getAllQuizzes',
                 Router::CONFIG_KEY_PATH => '/admin/results',
                 Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
+            'view_result' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'quizInstance',
+                Router::CONFIG_KEY_ACTION => 'getResult',
+                Router::CONFIG_KEY_PATH => '/admin/results/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
+                ]
+            ],
+            'save_result' => [
+                Router::CONFIG_KEY_METHOD => 'POST',
+                Router::CONFIG_KEY_CONTROLLER => 'quizInstance',
+                Router::CONFIG_KEY_ACTION => 'saveResult',
+                Router::CONFIG_KEY_PATH => '/admin/results/{id}',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                    'id' => '\d+'
                 ]
             ],
         ],
