@@ -148,6 +148,15 @@ class QuizTemplateRepository extends AbstractRepository
         return $stm->fetchAll();
     }
 
+    public function getSelectedQuestions(int $quizTemplateID) {
+        $sql = 'SELECT questiontemplateid FROM quizquestion WHERE quiztemplateid = :quizid';
+        $stm = $this->pdo->prepare($sql);
+        $stm->bindParam(':quizid', $quizTemplateID);
+        $stm->execute();
+
+        return $stm->fetchAll();
+    }
+
     public function deleteRelation(int $quizTemplateID) {
         $sql = 'DELETE FROM quizquestion WHERE quiztemplateid = :quizid';
         $stm = $this->pdo->prepare($sql);

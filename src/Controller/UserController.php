@@ -51,14 +51,13 @@ class UserController extends AbstractController
         $data = $this->userService->login($email, $password);
 
         if ($data) {
-            $location =  'Location: http://local.quizapp.com/'.$data[0];
+            $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/'.$data[0];
             $this->session->set('id', $data[1]);
             $this->session->set('role', $data[0]);
             $this->session->set('name', $data[2]);
         }
 
-        $body = Stream::createFromString("");
-        return new Response($body, '1.1', '301', $location);
+        return $this->redirect($location, 301);
     }
 
     public function getHomepage (RouteMatch $routeMatch, Request $request)
@@ -78,22 +77,19 @@ class UserController extends AbstractController
     public function logout (RouteMatch $routeMatch, Request $request)
     {
         $this->session->destroy();
-        $location = 'Location: http://local.quizapp.com/';
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/';
 
-        $body = Stream::createFromString("");
-        /*$response =  (new Response($body, '1.1', '301', $location))
-            ->withAddedHeader() */
-        return new Response($body, '1.1', '301', $location);
-    }
-
-    public function getQuizzes (RouteMatch $routeMatch, Request $request)
-    {
-        $data = $this->userService->getQuizzes();
-
-        return $this->renderer->renderView('admin-quizzes-listing.phtml', ['data' => $data]);
+        return $this->redirect($location, 301);
     }
 
     //^^^^maybe should be in security controller
+
+    public function getQuizzes (RouteMatch $routeMatch, Request $request)
+    {
+        $data = $this->userService->getQuizzes($this->session->get('id'));
+
+        return $this->renderer->renderView('admin-quizzes-listing.phtml', ['data' => $data]);
+    }
 
     public function getUsers (RouteMatch $routeMatch, Request $request)
     {
@@ -127,7 +123,7 @@ class UserController extends AbstractController
             $data = $this->userService->getUsersSearch($filters, $page);
         }
 
-        return $this->renderer->renderView('admin-users-listing.html', ['data' => $data, 'count' => $count, 'page' => $page, 'name' => $name]);
+        return $this->renderer->renderView('admin-users-listing.phtml', ['data' => $data, 'count' => $count, 'page' => $page, 'name' => $name]);
     }
 
     public function addUsers (RouteMatch $routeMatch, Request $request)
@@ -140,20 +136,20 @@ class UserController extends AbstractController
     {
         $data = $request->getParameters();
         $this->userService->addUser($data);
-        $location = "Location: http://local.quizapp.com/admin/user";
-        $body = Stream::createFromString("");
 
-        return new Response($body, '1.1', '301', $location);
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/user';
+
+        return $this->redirect($location, 301);
     }
 
     public function delete (RouteMatch $routeMatch, Request $request)
     {
         $id = $routeMatch->getRequestAttributes()['id'];
         $this->userService->deleteUser($id);
-        $location = "Location: http://local.quizapp.com/admin/user";
 
-        $body = Stream::createFromString("");
-        return new Response($body, '1.1', '301', $location);
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/user';
+
+        return $this->redirect($location, 301);
     }
 
     public function editUser (RouteMatch $routeMatch, Request $request)
@@ -161,7 +157,7 @@ class UserController extends AbstractController
         $id = $routeMatch->getRequestAttributes()['id'];
         $user = $this->userService->getUser($id);
 
-        return $this->renderer->renderView('admin-user-edit-details.html', ['user' => $user]);
+        return $this->renderer->renderView('admin-user-edit-details.phtml', ['user' => $user]);
     }
 
     public function edit (RouteMatch $routeMatch, Request $request)
@@ -170,9 +166,8 @@ class UserController extends AbstractController
         $data = $request->getParameters();
         $this->userService->editUser($id, $data);
 
-        $location = "Location: http://local.quizapp.com/admin/user";
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/user';
 
-        $body = Stream::createFromString("");
-        return new Response($body, '1.1', '301', $location);
+        return $this->redirect($location, 301);
     }
 }

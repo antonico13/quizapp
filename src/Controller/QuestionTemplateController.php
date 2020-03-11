@@ -27,22 +27,22 @@ class QuestionTemplateController extends AbstractController
     }
 
     public function add (RouteMatch $routeMatch, Request $request) {
-        $data = $request->getParameters();
-        $id = $this->session->get('id');
-        $this->questionService->addQuestion($data, $id);
-        $location = "Location: http://local.quizapp.com/admin/question";
+        if ($this->session->get('role') == 'admin') {
+            $data = $request->getParameters();
+            $id = $this->session->get('id');
+            $this->questionService->addQuestion($data, $id);
+            $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/question';
 
-        $body = Stream::createFromString("");
-        return new Response($body, '1.1', '301', $location);
+            return $this->redirect($location, 301);
+        }
     }
 
     public function delete (RouteMatch $routeMatch, Request $request) {
         $id = $routeMatch->getRequestAttributes()['id'];
         $this->questionService->deleteQuestion($id);
-        $location = "Location: http://local.quizapp.com/admin/question";
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/question';
 
-        $body = Stream::createFromString("");
-        return new Response($body, '1.1', '301', $location);
+        return $this->redirect($location, 301);
     }
 
     public function edit (RouteMatch $routeMatch, Request $request) {
@@ -50,10 +50,9 @@ class QuestionTemplateController extends AbstractController
         $data = $request->getParameters();
         $this->questionService->editQuestion($id, $data);
 
-        $location = "Location: http://local.quizapp.com/admin/question";
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/question';
 
-        $body = Stream::createFromString("");
-        return new Response($body, '1.1', '301', $location);
+        return $this->redirect($location, 301);
     }
 
     public function getQuestions (RouteMatch $routeMatch, Request $request) {

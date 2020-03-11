@@ -63,7 +63,11 @@
             <label for="quizQuestions">Questions</label>
             <select class="form-control" id="quizQuestions" name = "questions[]" multiple>
                 <?php foreach ($questions as $question): ?>
+                <?php if (isset($selectedQuestions[$question->getID()])): ?>
+                <option value="<?php echo $question->getID() ?>" selected="selected" > <?php echo $question->getText() ?> </option>
+                <?php else: ?>
                 <option value="<?php echo $question->getID() ?>"> <?php echo $question->getText() ?> </option>
+                <?php endif ?>
                 <?php endforeach ?>
             </select>
         </div>

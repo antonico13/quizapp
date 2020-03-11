@@ -21,6 +21,7 @@
 
     <!--Custom css-->
     <link rel="stylesheet" href="/assets/css/custom-css.css">
+    <link rel="stylesheet" href="/assets/css/highlighter.css">
 
     <title>Admin - Results</title>
 </head>
@@ -62,6 +63,9 @@
         <?php foreach($questionsAnswers['answers'][$i] as $answer):?>
         <div class="card-body">
             <p class="mb-1">Answer: </p>
+            <?php /** @var $answer \Quizapp\Entity\TextInstance */ ?>
+            <?php if ($answer->isCodeAnswer()): ?>
+            <?php endif;?>
             <span><?php echo $answer->getText() ?></span>
         </div>
         <?php endforeach ?>

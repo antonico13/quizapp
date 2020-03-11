@@ -31,10 +31,9 @@ class TextInstanceController extends AbstractController
         $text = $request->getParameter('answer');
         $this->answerService->save($textID, $text);
 
-        $location = "Location: http://local.quizapp.com/user/quiz/question/$nextQuestion";
-        $body = Stream::createFromString("");
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/question'.$nextQuestion;
 
-        return new Response($body, '1.1', '301', $location);
+        return $this->redirect($location, 301);
     }
 
     public function save (RouteMatch $routeMatch, Request $request) {
@@ -42,9 +41,8 @@ class TextInstanceController extends AbstractController
         $text = $request->getParameter('answer');
         $this->answerService->save($textID, $text);
 
-        $location = "Location: http://local.quizapp.com/user/quiz/review";
-        $body = Stream::createFromString("");
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/review';
 
-        return new Response($body, '1.1', '301', $location);
+        return $this->redirect($location, 301);
     }
 }

@@ -9,6 +9,7 @@ use Framework\Dispatcher\Dispatcher;
 use Framework\Renderer\Renderer;
 use Framework\Router\Router;
 use Framework\Session\Session;
+use HighlightLib\CodeHighlight;
 use Quizapp\Controller\QuestionInstanceController;
 use Quizapp\Controller\QuestionTemplateController;
 use Quizapp\Controller\QuizInstanceController;
@@ -52,6 +53,7 @@ $container->setParameter('dsn', "mysql:host={$config['database']['host']};dbname
 $container->setParameter('user', $config['database']['user']);
 $container->setParameter('pass', $config['database']['pass']);
 $container->setParameter('options', $config['options']);
+$container->setParameter('highlight', $config['highlight']);
 
 $container->register(PDO::class, PDO::class)
     ->addArgument('%dsn%')
@@ -60,6 +62,9 @@ $container->register(PDO::class, PDO::class)
     ->addArgument('%options%');
 
 $container->register(RepositoryManagerInterface::class, RepositoryManager::class);
+
+$container->register(CodeHighlight::class, CodeHighlight::class)
+    ->addArgument('%highlight%');
 
 $container->register(HydratorInterface::class, Hydrator::class)
     ->addArgument(new Reference(RepositoryManagerInterface::class));
@@ -185,7 +190,8 @@ $container->register(QuizInstanceController::class,QuizInstanceController::class
 
 $container->register(TextInstanceService::class, TextInstanceService::class)
     ->addArgument(new Reference(RepositoryManagerInterface::class))
-    ->addArgument(new Reference(TextInstanceRepository::class));
+    ->addArgument(new Reference(TextInstanceRepository::class))
+    ->addArgument(new Reference(CodeHighlight::class));
 
 $container->register(TextInstanceController::class,TextInstanceController::class)
     ->addArgument(new Reference(RendererInterface::class))

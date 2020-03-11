@@ -85,18 +85,22 @@ class QuizTemplateController extends AbstractController
         $userid = $this->session->get('id');
         $data = $request->getParameters();
         $this->quizService->addQuiz($userid, $data);
-        $location = "Location: http://local.quizapp.com/admin/quiz";
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/quiz';
 
-        $body = Stream::createFromString("");
-        return new Response($body, '1.1', '301', $location);
+        return $this->redirect($location, 301);
     }
 
     public function editQuizzes (RouteMatch $routeMatch, Request $request) {
         $id = $routeMatch->getRequestAttributes()['id'];
         $quiz = $this->quizService->getQuiz($id);
         $questions = $this->quizService->getAllQuestions();
+        $selectedQuestions = $this->quizService->getSelectedQuestions($id);
+        $selected = [];
+        foreach ($selectedQuestions as $selectedQuestion) {
+            $selected[$selectedQuestion['questiontemplateid']] = true;
+        }
 
-        return $this->renderer->renderView('admin-quiz-edit-details.phtml', ['quiz' => $quiz, 'questions' => $questions]);
+        return $this->renderer->renderView('admin-quiz-edit-details.phtml', ['quiz' => $quiz, 'questions' => $questions, 'selectedQuestions' => $selected]);
     }
 
     public function edit (RouteMatch $routeMatch, Request $request) {
@@ -105,18 +109,17 @@ class QuizTemplateController extends AbstractController
         $data = $request->getParameters();
         $this->quizService->editQuiz($userid, $id, $data);
 
-        $location = "Location: http://local.quizapp.com/admin/quiz";
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/quiz';
 
-        $body = Stream::createFromString("");
-        return new Response($body, '1.1', '301', $location);
+        return $this->redirect($location, 301);
     }
 
     public function delete (RouteMatch $routeMatch, Request $request) {
         $id = $routeMatch->getRequestAttributes()['id'];
         $this->quizService->deleteQuiz($id);
-        $location = "Location: http://local.quizapp.com/admin/quiz";
 
-        $body = Stream::createFromString("");
-        return new Response($body, '1.1', '301', $location);
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/quiz';
+
+        return $this->redirect($location, 301);
     }
 }

@@ -67,4 +67,54 @@ class QuizInstanceRepository extends AbstractRepository
         return $stm->fetch()['COUNT(*)'];
     }
 
+    public function findBySearch(array $filters, array $sorts, int $from, int $size, string $search): array
+    {
+        $search = '%'.$search.'%';
+        $sql = 'SELECT * FROM '.$this->getTableName().' WHERE ';
+        if ($filters) {
+            foreach ($filters as $fieldName => $value) {
+                $sql .= $fieldName . ' = :' . $fieldName . ' AND ';
+            }
+        }
+
+        $sql .= ' name LIKE :search ';
+
+        if ($sorts) {
+            $sql .= ' ORDER BY ';
+
+            foreach ($sorts as $fieldName => $direction) {
+                $dir = 'ASC';
+                if (preg_match('/DESC/', $direction)) {
+                    $dir = 'DESC';
+                }
+                $sql .= $fieldName . ' ' . $dir . ' ';
+            }
+        }
+
+        $sql .= ' LIMIT :size OFFSET :from';
+
+        //var_dump($sql);
+
+        $stm = $this->pdo->prepare($sql);
+
+        foreach ($filters as $fieldName => $value) {
+            $stm->bindValue(':' . $fieldName, $value);
+        }
+
+        $stm->bindParam(':search', $search);
+        $stm->bindParam(':size', $size);
+        $stm->bindParam(':from', $from);
+
+        $stm->execute();
+        $data = $stm->fetchAll();
+        $entities = array();
+
+        foreach ($data as $datum) {
+            $entities[] = $this->hydrator->hydrate($this->entityName, $datum);
+        }
+
+        return $entities;
+
+    }
+
 }

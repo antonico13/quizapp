@@ -30,10 +30,9 @@ class QuizInstanceController extends AbstractController
         $userID = $this->session->get('id');
         $quizInstanceID= $this->quizService->addQuiz($userID, $quizTemplateID);
         $this->session->set('quizInstanceID', $quizInstanceID);
-        $location = "Location: http://local.quizapp.com/user/quiz/question/1";
-        $body = Stream::createFromString("");
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/question/1';
 
-        return new Response($body, '1.1', '301', $location);
+        return $this->redirect($location, 301);
     }
 
     public function getReview (RouteMatch $routeMatch, Request $request) {
@@ -54,10 +53,9 @@ class QuizInstanceController extends AbstractController
         $quizInstanceID = $routeMatch->getRequestAttributes()['id'];
         $score = $request->getParameter('score');
         $this->quizService->saveScore($quizInstanceID, $score);
-        $location = "Location: http://local.quizapp.com/admin/results";
-        $body = Stream::createFromString("");
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/results';
 
-        return new Response($body, '1.1', '301', $location);
+        return $this->redirect($location, 301);
     }
 
     public function saveQuiz (RouteMatch $routeMatch, Request $request) {

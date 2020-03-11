@@ -64,7 +64,7 @@ class QuizTemplateService extends AbstractService
         $quiz = $this->getQuiz($id);
         $quiz->setText($data['text']);
         $quiz->setName($data['name']);
-
+        $this->entityRepo->deleteRelation($id);
         $questions = $data['questions'];
 
         $this->repoManager->register($quiz);
@@ -79,6 +79,10 @@ class QuizTemplateService extends AbstractService
         $quiz = $this->entityRepo->find($id);
         $this->entityRepo->deleteRelation($id);
         $this->entityRepo->delete($quiz);
+    }
+
+    public function getSelectedQuestions(int $id) {
+        return $this->entityRepo->getSelectedQuestions($id);
     }
 
 }

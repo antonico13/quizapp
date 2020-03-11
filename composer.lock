@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ToniCodrea/mvc-framework-skeleton.git",
-                "reference": "8109e05f1a168c12abcd1ee535820045c1473450"
+                "reference": "faebb39c7e38e1a7d1543517c5b6311e57d1fb4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ToniCodrea/mvc-framework-skeleton/zipball/8109e05f1a168c12abcd1ee535820045c1473450",
-                "reference": "8109e05f1a168c12abcd1ee535820045c1473450",
+                "url": "https://api.github.com/repos/ToniCodrea/mvc-framework-skeleton/zipball/faebb39c7e38e1a7d1543517c5b6311e57d1fb4a",
+                "reference": "faebb39c7e38e1a7d1543517c5b6311e57d1fb4a",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
             "support": {
                 "source": "https://github.com/ToniCodrea/mvc-framework-skeleton/tree/master"
             },
-            "time": "2020-03-09T09:57:57+00:00"
+            "time": "2020-03-11T17:56:51+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -937,12 +937,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ToniCodrea/ORM.git",
-                "reference": "70a08cbb52fb7306b35382d6a1443d09561a1dbd"
+                "reference": "275495ae0dccbbf64ac18486911f64068a77350a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ToniCodrea/ORM/zipball/70a08cbb52fb7306b35382d6a1443d09561a1dbd",
-                "reference": "70a08cbb52fb7306b35382d6a1443d09561a1dbd",
+                "url": "https://api.github.com/repos/ToniCodrea/ORM/zipball/275495ae0dccbbf64ac18486911f64068a77350a",
+                "reference": "275495ae0dccbbf64ac18486911f64068a77350a",
                 "shasum": ""
             },
             "require": {
@@ -969,7 +969,7 @@
                 "source": "https://github.com/ToniCodrea/ORM/tree/master",
                 "issues": "https://github.com/ToniCodrea/ORM/issues"
             },
-            "time": "2020-03-11T11:18:38+00:00"
+            "time": "2020-03-11T19:07:22+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

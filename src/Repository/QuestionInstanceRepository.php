@@ -46,4 +46,5 @@ class QuestionInstanceRepository extends AbstractRepository
         return $stm->fetch()['COUNT(*)'];
     }
 
+
 }

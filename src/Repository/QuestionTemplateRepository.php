@@ -104,7 +104,7 @@ class QuestionTemplateRepository extends AbstractRepository
     public function deleteRelation(int $questionTemplateID) {
         $sql = 'DELETE FROM quizquestion WHERE questiontemplateid = :questionid';
         $stm = $this->pdo->prepare($sql);
-        $stm->bindParam(':questiond', $questionTemplateID);
+        $stm->bindParam(':questionid', $questionTemplateID);
         $stm->execute();
     }
 }

@@ -9,9 +9,11 @@ use Framework\Contracts\SessionInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\Request;
 use Framework\Routing\RouteMatch;
+use HighlightLib\CodeHighlight;
 use Quizapp\Contracts\ServiceInterface;
 use Quizapp\Entity\QuestionInstance;
 use Quizapp\Entity\QuizInstance;
+use Quizapp\Entity\TextInstance;
 
 class QuestionInstanceController extends AbstractController
 {

@@ -28,6 +28,15 @@ class TextInstance extends AbstractEntity implements TemplatedInterface
         return $this->text;
     }
 
+    public function isCodeAnswer() {
+        /**
+         * @var QuestionInstance $question
+         */
+        $question = $this->getRepository()->getForeignEntity(QuestionInstance::class, $this);
+
+        return $question->getType() == 'Code';
+    }
+
     public function getID() {
         return $this->id;
     }
