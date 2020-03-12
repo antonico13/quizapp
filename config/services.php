@@ -194,12 +194,12 @@ $container->register(QuizInstanceController::class,QuizInstanceController::class
     ->addArgument(new Reference(RendererInterface::class))
     ->addArgument(new Reference(SessionInterface::class))
     ->addArgument(new Reference(QuizInstanceService::class))
+    ->addArgument(new Reference(CodeHighlight::class))
     ->addTag('controller');
 
 $container->register(TextInstanceService::class, TextInstanceService::class)
     ->addArgument(new Reference(RepositoryManagerInterface::class))
-    ->addArgument(new Reference(TextInstanceRepository::class))
-    ->addArgument(new Reference(CodeHighlight::class));
+    ->addArgument(new Reference(TextInstanceRepository::class));
 
 $container->register(TextInstanceController::class,TextInstanceController::class)
     ->addArgument(new Reference(RendererInterface::class))

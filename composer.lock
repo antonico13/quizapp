@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ToniCodrea/codeHighlightLib.git",
-                "reference": "46be18680ece1b926b744561050321b35248ac1a"
+                "reference": "789811065ce73486925f15ed1c7c5f9c699c6617"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ToniCodrea/codeHighlightLib/zipball/46be18680ece1b926b744561050321b35248ac1a",
-                "reference": "46be18680ece1b926b744561050321b35248ac1a",
+                "url": "https://api.github.com/repos/ToniCodrea/codeHighlightLib/zipball/789811065ce73486925f15ed1c7c5f9c699c6617",
+                "reference": "789811065ce73486925f15ed1c7c5f9c699c6617",
                 "shasum": ""
             },
             "require": {
@@ -38,7 +38,7 @@
             "support": {
                 "source": "https://github.com/ToniCodrea/codeHighlightLib/tree/master"
             },
-            "time": "2020-02-21T14:59:41+00:00"
+            "time": "2020-03-12T17:55:52+00:00"
         },
         {
             "name": "doctrine/instantiator",

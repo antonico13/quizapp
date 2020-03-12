@@ -8,16 +8,20 @@ use Framework\Contracts\RendererInterface;
 use Framework\Contracts\SessionInterface;
 use Framework\Http\Request;
 use Framework\Routing\RouteMatch;
+use HighlightLib\CodeHighlight;
 use Quizapp\Contracts\ServiceInterface;
+use Quizapp\Entity\TextInstance;
 
 class QuizInstanceController extends SecurityController
 {
     private $quizService;
+    private $codeHighlighter;
 
-    public function __construct (RendererInterface $renderer, SessionInterface $session, ServiceInterface $quizService)
+    public function __construct (RendererInterface $renderer, SessionInterface $session, ServiceInterface $quizService, CodeHighlight $codeHighlighter)
     {
         parent::__construct($renderer, $session);
         $this->quizService = $quizService;
+        $this->codeHighlighter = $codeHighlighter;
     }
 
     public function getQuiz (RouteMatch $routeMatch, Request $request) {
@@ -44,6 +48,16 @@ class QuizInstanceController extends SecurityController
         $quizInstanceID = $this->session->get('quizInstanceID');
         $quizInstance = $this->quizService->findQuiz($quizInstanceID);
         $questionsAnswers = $this->quizService->getAllQuestions($quizInstanceID);
+        foreach ($questionsAnswers['answers'] as $answers) {
+            foreach ($answers as $answer) {
+                /**
+                 * @var TextInstance $answer
+                 */
+                if ($answer->isCodeAnswer()) {
+                    $answer->setText($this->codeHighlighter->highlight($answer->getText()));
+                }
+            }
+        }
         return $this->renderer->renderView('candidate-results.phtml', ['questionsAnswers' => $questionsAnswers,
                                                                                 'quizInstance' => $quizInstance,
                                                                                 'userName' => $this->session->get('name')]);
@@ -61,6 +75,17 @@ class QuizInstanceController extends SecurityController
         $quizInstanceID = $routeMatch->getRequestAttributes()['id'];
         $quizInstance = $this->quizService->findQuiz($quizInstanceID);
         $questionsAnswers = $this->quizService->getAllQuestions($quizInstanceID);
+        foreach ($questionsAnswers['answers'] as $answers) {
+            foreach ($answers as $answer) {
+                /**
+                 * @var TextInstance $answer
+                 */
+                if ($answer->isCodeAnswer()) {
+                    $answer->setText($this->codeHighlighter->highlight($answer->getText()));
+                }
+            }
+        }
+
         return $this->renderer->renderView('admin-results.phtml', ['questionsAnswers' => $questionsAnswers,
                                                                             'quizInstance' => $quizInstance,
                                                                             'userName' => $this->session->get('name')]);
