@@ -24,32 +24,53 @@ class QuestionTemplate extends AbstractEntity
      */
     private $text;
 
+    /**
+     * @param $text
+     */
     public function setText($text) {
         $this->text = $text;
     }
 
+    /**
+     * @param $type
+     */
     public function setType($type) {
         $this->type = $type;
     }
 
+    /**
+     * @param int $userID
+     */
     public function setUserID(int $userID) {
         $this->getRepository()->setForeignID($userID, User::class, $this);
     }
 
+    /**
+     * @return mixed
+     */
     public function getAnswers() {
         return $this->getRepository()->getForeignEntities(TextTemplate::class, $this);
     }
 
+    /**
+     * @return string
+     */
     public function getText()
     {
         return $this->text;
     }
 
+    /**
+     * @return int
+     */
     public function getID()
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getType()
     {
         return $this->type;

@@ -56,7 +56,7 @@
         <form action = "" method="get">
             <?php foreach($answers as $answer): ?>
             <div class="form-group">
-                <textarea class="form-control" id="questionResponse" name = "answer" placeholder="Question response" required="required" ><?php echo $answer->getText() ?></textarea>
+                <textarea class="form-control" id="questionResponse" name = "answer" placeholder="Question response" maxlength="1000" required="required" ><?php echo $answer->getText() ?></textarea>
             </div>
             <?php endforeach ?>
             <div class="text-center">

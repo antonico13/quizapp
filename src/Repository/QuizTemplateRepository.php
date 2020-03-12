@@ -9,6 +9,10 @@ use ReallyOrm\Repository\AbstractRepository;
 
 class QuizTemplateRepository extends AbstractRepository
 {
+    /**
+     * @param EntityInterface $quiz
+     * @param array $ids
+     */
     public function insertOnLinkTable(EntityInterface $quiz, array $ids) {
         $quizid = $quiz->getId();
         foreach ($ids as $id) {
@@ -21,6 +25,9 @@ class QuizTemplateRepository extends AbstractRepository
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function getAllQuestions() {
         $sql = 'SELECT * FROM questiontemplate';
 
@@ -30,6 +37,10 @@ class QuizTemplateRepository extends AbstractRepository
         return $this->hydrator->hydrateMany(QuestionTemplate::class, $stm->fetchAll());
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function countQuestions(int $id) {
         $sql = 'SELECT COUNT(*) FROM quizquestion WHERE quiztemplateid = :quizid';
 
@@ -40,6 +51,10 @@ class QuizTemplateRepository extends AbstractRepository
         return $stm->fetch()['COUNT(*)'];
     }
 
+    /**
+     * @param int $id
+     * @return array
+     */
     public function getQuestions(int $id) {
         $sql = 'SELECT * FROM quizquestion WHERE quiztemplateid = :quizid';
         $stm = $this->pdo->prepare($sql);
@@ -49,6 +64,10 @@ class QuizTemplateRepository extends AbstractRepository
         return $stm->fetchAll();
     }
 
+    /**
+     * @param int $quizTemplateID
+     * @return array
+     */
     public function getSelectedQuestions(int $quizTemplateID) {
         $sql = 'SELECT questiontemplateid FROM quizquestion WHERE quiztemplateid = :quizid';
         $stm = $this->pdo->prepare($sql);
@@ -58,6 +77,9 @@ class QuizTemplateRepository extends AbstractRepository
         return $stm->fetchAll();
     }
 
+    /**
+     * @param int $quizTemplateID
+     */
     public function deleteRelation(int $quizTemplateID) {
         $sql = 'DELETE FROM quizquestion WHERE quiztemplateid = :quizid';
         $stm = $this->pdo->prepare($sql);

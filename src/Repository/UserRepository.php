@@ -9,6 +9,11 @@ use ReallyOrm\Repository\AbstractRepository;
 
 class UserRepository extends AbstractRepository
 {
+    /**
+     * @param string $className
+     * @param EntityInterface $target
+     * @return array
+     */
     public function getQuizzes (string $className, EntityInterface $target) : array
     {
         $entityTable = $this->getEntityTableName($className);
@@ -24,6 +29,11 @@ class UserRepository extends AbstractRepository
         return $this->hydrator->hydrateMany($className, $row);
     }
 
+    /**
+     * @param string $className
+     * @param EntityInterface $target
+     * @return array
+     */
     public function getQuestions (string $className, EntityInterface $target) : array
     {
         $entityTable = $this->getEntityTableName($className);

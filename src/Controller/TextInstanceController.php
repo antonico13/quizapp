@@ -6,15 +6,15 @@ namespace Quizapp\Controller;
 
 use Framework\Contracts\RendererInterface;
 use Framework\Contracts\SessionInterface;
-use Framework\Controller\AbstractController;
 use Framework\Http\Request;
-use Framework\Http\Response;
-use Framework\Http\Stream;
 use Framework\Routing\RouteMatch;
 use Quizapp\Contracts\ServiceInterface;
 
 class TextInstanceController extends SecurityController
 {
+    /**
+     * @var ServiceInterface
+     */
     private $answerService;
 
     public function __construct (RendererInterface $renderer, SessionInterface $session, ServiceInterface $answerService)
@@ -23,6 +23,11 @@ class TextInstanceController extends SecurityController
         $this->answerService = $answerService;
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function next (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
@@ -38,6 +43,11 @@ class TextInstanceController extends SecurityController
         return $this->redirect($location, 301);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function save (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);

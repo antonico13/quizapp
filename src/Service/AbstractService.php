@@ -11,9 +11,20 @@ use ReallyOrm\Repository\RepositoryManagerInterface;
 
 class AbstractService implements ServiceInterface
 {
+    /**
+     * @var RepositoryManagerInterface
+     */
     protected $repoManager;
+    /**
+     * @var RepositoryInterface
+     */
     protected $entityRepo;
 
+    /**
+     * AbstractService constructor.
+     * @param RepositoryManagerInterface $repoManager
+     * @param RepositoryInterface $entityRepo
+     */
     public function __construct(RepositoryManagerInterface $repoManager, RepositoryInterface $entityRepo)
     {
         $this->repoManager = $repoManager;

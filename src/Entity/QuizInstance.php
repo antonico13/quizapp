@@ -34,44 +34,69 @@ class QuizInstance extends AbstractEntity
      */
     private $issaved;
 
-
-
+    /**
+     * @param $userId
+     */
     public function setUserID($userId) {
         $this->getRepository()->setForeignID($userId,User::class, $this);
     }
 
+    /**
+     * @param $quizId
+     */
     public function setQuizID($quizId) {
         $this->getRepository()->setForeignID($quizId, QuizTemplate::class, $this);
     }
 
+    /**
+     * @return mixed
+     */
     public function getQuestions() {
         return $this->getRepository()->getForeignEntities(QuestionInstance::class, $this);
     }
 
+    /**
+     * @return mixed
+     */
     public function getUser() {
         return $this->getRepository()->getForeignEntity(User::class, $this);
     }
 
+    /**
+     * @return int
+     */
     public function getID()
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getText()
     {
         return $this->text;
     }
 
+    /**
+     * @return int
+     */
     public function getScore()
     {
         return $this->score;
     }
 
+    /**
+     * @param int $score
+     */
     public function setScore(int $score)
     {
         $this->score = $score;
@@ -81,10 +106,16 @@ class QuizInstance extends AbstractEntity
         $this->text = $text;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name) {
         $this->name = $name;
     }
 
+    /**
+     * @param bool $value
+     */
     public function setSaved(bool $value) {
         $this->issaved = $value;
     }

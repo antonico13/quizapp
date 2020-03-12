@@ -27,6 +27,11 @@ class UserController extends SecurityController
         $this->userService = $userService;
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getLogin (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -41,6 +46,11 @@ class UserController extends SecurityController
         return $this->redirect($location, 301);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function login (RouteMatch $routeMatch, Request $request)
     {
         $email = $request->getParameter('email');
@@ -60,6 +70,11 @@ class UserController extends SecurityController
         return $this->redirect($location, 301);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getHomepage (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -68,10 +83,19 @@ class UserController extends SecurityController
 
         $name = $this->session->get('name');
 
-        return $this->renderer->renderView('candidate-quiz-listing.phtml', ['name' => $name,
-                                                                                    'userName' => $this->session->get('name')]);
+        return $this->renderer->renderView
+            ('candidate-quiz-listing.phtml',
+                [
+                    'name' => $name,
+                    'userName' => $this->session->get('name')
+                ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getDashboard (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -84,10 +108,19 @@ class UserController extends SecurityController
 
         $name = $this->session->get('name');
 
-        return $this->renderer->renderView('admin-dashboard.phtml', ['name' => $name,
-                                                                            'userName' => $this->session->get('name')]);
+        return $this->renderer->renderView
+            ('admin-dashboard.phtml',
+                [
+                    'name' => $name,
+                    'userName' => $this->session->get('name')
+                ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function logout (RouteMatch $routeMatch, Request $request)
     {
         $this->session->destroy();
@@ -98,6 +131,11 @@ class UserController extends SecurityController
 
     //^^^^maybe should be in security controller
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getQuizzes (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -110,10 +148,19 @@ class UserController extends SecurityController
 
         $data = $this->userService->getQuizzes($this->session->get('id'));
 
-        return $this->renderer->renderView('admin-quizzes-listing.phtml', ['data' => $data,
-                                                                                    'userName' => $this->session->get('name')]);
+        return $this->renderer->renderView
+            ('admin-quizzes-listing.phtml',
+                [
+                    'data' => $data,
+                    'userName' => $this->session->get('name')
+                ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getUsers (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -152,13 +199,22 @@ class UserController extends SecurityController
 
         $data = $this->userService->getUsers($filters, $sorts, $page, 5);
 
-        return $this->renderer->renderView('admin-users-listing.phtml', ['data' => $data,
-                                                                                'count' => $count,
-                                                                                'page' => $page,
-                                                                                'name' => $name,
-                                                                                'userName' => $this->session->get('name')]);
+        return $this->renderer->renderView
+            ('admin-users-listing.phtml',
+                [
+                    'data' => $data,
+                    'count' => $count,
+                    'page' => $page,
+                    'name' => $name,
+                    'userName' => $this->session->get('name')
+                ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function addUsers (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -169,10 +225,19 @@ class UserController extends SecurityController
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
         }
 
-        return $this->renderer->renderView('admin-user-details.phtml', ['userName' => $this->session->get('name'),
-                                                                                'emailExists' => false]);
+        return $this->renderer->renderView
+            ('admin-user-details.phtml',
+                [
+                    'userName' => $this->session->get('name'),
+                    'emailExists' => false
+                ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function add (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -185,8 +250,12 @@ class UserController extends SecurityController
 
         $data = $request->getParameters();
         if ($this->userService->addUser($data) == null) {
-            return $this->renderer->renderView('admin-user-details.phtml', ['userName' => $this->session->get('name'),
-                                                                                    'emailExists' => true]);
+            return $this->renderer->renderView
+            ('admin-user-details.phtml',
+                [
+                    'userName' => $this->session->get('name'),
+                    'emailExists' => true
+                ]);
         }
 
         $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/user';
@@ -194,6 +263,11 @@ class UserController extends SecurityController
         return $this->redirect($location, 301);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function delete (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -216,6 +290,11 @@ class UserController extends SecurityController
         return $this->redirect($location, 301);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function editUser (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -232,11 +311,20 @@ class UserController extends SecurityController
             return $this->renderer->renderException(['message' => 'User not found'], 404);
         }
 
-        return $this->renderer->renderView('admin-user-edit-details.phtml', ['user' => $user,
-                                                                                'userName' => $this->session->get('name'),
-                                                                                    'emailExists' => false]);
+        return $this->renderer->renderView
+            ('admin-user-edit-details.phtml',
+                [
+                    'user' => $user,
+                    'userName' => $this->session->get('name'),
+                    'emailExists' => false
+                ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function edit (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -251,9 +339,13 @@ class UserController extends SecurityController
         $data = $request->getParameters();
         if ($this->userService->editUser($id, $data) == null) {
             $user = $this->userService->getUser($id);
-            return $this->renderer->renderView('admin-user-edit-details.phtml', ['user' => $user,
-                                                                                        'userName' => $this->session->get('name'),
-                                                                                        'emailExists' => true]);
+            return $this->renderer->renderView
+                ('admin-user-edit-details.phtml',
+                    [
+                        'user' => $user,
+                        'userName' => $this->session->get('name'),
+                        'emailExists' => true
+                    ]);
         }
 
         if ($data['role'] != 'user') {

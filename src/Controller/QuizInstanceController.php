@@ -14,9 +14,22 @@ use Quizapp\Entity\TextInstance;
 
 class QuizInstanceController extends SecurityController
 {
+    /**
+     * @var ServiceInterface
+     */
     private $quizService;
+    /**
+     * @var CodeHighlight
+     */
     private $codeHighlighter;
 
+    /**
+     * QuizInstanceController constructor.
+     * @param RendererInterface $renderer
+     * @param SessionInterface $session
+     * @param ServiceInterface $quizService
+     * @param CodeHighlight $codeHighlighter
+     */
     public function __construct (RendererInterface $renderer, SessionInterface $session, ServiceInterface $quizService, CodeHighlight $codeHighlighter)
     {
         parent::__construct($renderer, $session);
@@ -24,6 +37,11 @@ class QuizInstanceController extends SecurityController
         $this->codeHighlighter = $codeHighlighter;
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getQuiz (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
@@ -41,6 +59,11 @@ class QuizInstanceController extends SecurityController
         return $this->redirect($location, 301);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getReview (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
@@ -58,11 +81,20 @@ class QuizInstanceController extends SecurityController
                 }
             }
         }
-        return $this->renderer->renderView('candidate-results.phtml', ['questionsAnswers' => $questionsAnswers,
-                                                                                'quizInstance' => $quizInstance,
-                                                                                'userName' => $this->session->get('name')]);
+        return $this->renderer->renderView
+            ('candidate-results.phtml',
+            [
+                'questionsAnswers' => $questionsAnswers,
+                'quizInstance' => $quizInstance,
+                'userName' => $this->session->get('name')
+            ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getResult (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
@@ -86,11 +118,20 @@ class QuizInstanceController extends SecurityController
             }
         }
 
-        return $this->renderer->renderView('admin-results.phtml', ['questionsAnswers' => $questionsAnswers,
-                                                                            'quizInstance' => $quizInstance,
-                                                                            'userName' => $this->session->get('name')]);
+        return $this->renderer->renderView
+            ('admin-results.phtml',
+            [
+                'questionsAnswers' => $questionsAnswers,
+                'quizInstance' => $quizInstance,
+                'userName' => $this->session->get('name')
+            ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function saveResult (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
@@ -108,6 +149,11 @@ class QuizInstanceController extends SecurityController
         return $this->redirect($location, 301);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function saveQuiz (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
@@ -118,6 +164,11 @@ class QuizInstanceController extends SecurityController
         return $this->renderer->renderView('quiz-success-page.phtml', ['userName' => $this->session->get('name')]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getAllQuizzes(RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -146,11 +197,15 @@ class QuizInstanceController extends SecurityController
 
         $count = ceil($count/5);
 
-        return $this->renderer->renderView('admin-results-listing.phtml', ['data' => $data,
-                                                                                    'count' => $count,
-                                                                                    'page' => $page,
-                                                                                    'search' => $search,
-                                                                                    'userName' => $this->session->get('name')]);
+        return $this->renderer->renderView
+            ('admin-results-listing.phtml',
+            [
+                'data' => $data,
+                'count' => $count,
+                'page' => $page,
+                'search' => $search,
+                'userName' => $this->session->get('name')
+            ]);
     }
 
 }

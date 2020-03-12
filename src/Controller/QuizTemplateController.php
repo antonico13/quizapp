@@ -12,14 +12,28 @@ use Quizapp\Contracts\ServiceInterface;
 
 class QuizTemplateController extends SecurityController
 {
+    /**
+     * @var ServiceInterface
+     */
     private $quizService;
 
+    /**
+     * QuizTemplateController constructor.
+     * @param RendererInterface $renderer
+     * @param SessionInterface $session
+     * @param ServiceInterface $quizService
+     */
     public function __construct (RendererInterface $renderer, SessionInterface $session, ServiceInterface $quizService)
     {
         parent::__construct($renderer, $session);
         $this->quizService = $quizService;
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getQuizzes (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -48,13 +62,22 @@ class QuizTemplateController extends SecurityController
         $count = ceil($count / 5);
         $data = $this->quizService->getQuizzes($userid, $sorts, $page, 5, $search);
 
-        return $this->renderer->renderView('admin-quizzes-listing.phtml', ['data' => $data,
-                                                                                    'count' => $count,
-                                                                                    'page' => $page,
-                                                                                    'search' => $search,
-                                                                                    'userName' => $this->session->get('name')]);
+        return $this->renderer->renderView
+            ('admin-quizzes-listing.phtml',
+            [
+                'data' => $data,
+                'count' => $count,
+                'page' => $page,
+                'search' => $search,
+                'userName' => $this->session->get('name')
+            ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function getAllQuizzes (RouteMatch $routeMatch, Request $request)
     {
         if (!$this->isLoggedIn()) {
@@ -80,13 +103,22 @@ class QuizTemplateController extends SecurityController
 
         $count = ceil($count/5);
 
-        return $this->renderer->renderView('candidate-quiz-listing.phtml', ['data' => $data,
-                                                                                    'count' => $count,
-                                                                                    'page' => $page,
-                                                                                    'search' => $search,
-                                                                                    'name' => $this->session->get('name')]);
+        return $this->renderer->renderView
+            ('candidate-quiz-listing.phtml',
+            [
+                'data' => $data,
+                'count' => $count,
+                'page' => $page,
+                'search' => $search,
+                'name' => $this->session->get('name')
+            ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function addQuizzes (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
@@ -97,10 +129,20 @@ class QuizTemplateController extends SecurityController
         }
 
         $questions = $this->quizService->getAllQuestions();
-        return $this->renderer->renderView('admin-quiz-details.phtml', ['questions' => $questions, 'userName' => $this->session->get('name')]);
+        return $this->renderer->renderView
+            ('admin-quiz-details.phtml',
+            [
+                'questions' => $questions,
+                'userName' => $this->session->get('name')
+            ]);
 
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function add (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
@@ -118,6 +160,11 @@ class QuizTemplateController extends SecurityController
         return $this->redirect($location, 301);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function editQuizzes (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
@@ -139,12 +186,21 @@ class QuizTemplateController extends SecurityController
             $selected[$selectedQuestion['questiontemplateid']] = true;
         }
 
-        return $this->renderer->renderView('admin-quiz-edit-details.phtml', ['quiz' => $quiz,
-                                                                                    'questions' => $questions,
-                                                                                    'selectedQuestions' => $selected,
-                                                                                    'userName' => $this->session->get('name')]);
+        return $this->renderer->renderView
+        ('admin-quiz-edit-details.phtml',
+            [
+                'quiz' => $quiz,
+                'questions' => $questions,
+                'selectedQuestions' => $selected,
+                'userName' => $this->session->get('name')
+            ]);
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function edit (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
@@ -165,6 +221,11 @@ class QuizTemplateController extends SecurityController
 
     }
 
+    /**
+     * @param RouteMatch $routeMatch
+     * @param Request $request
+     * @return \Framework\Http\Response
+     */
     public function delete (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);

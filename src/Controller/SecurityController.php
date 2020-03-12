@@ -12,14 +12,25 @@ use Quizapp\Contracts\ServiceInterface;
 
 class SecurityController extends AbstractController
 {
+    /**
+     * @var SessionInterface
+     */
     protected $session;
 
+    /**
+     * SecurityController constructor.
+     * @param RendererInterface $renderer
+     * @param SessionInterface $session
+     */
     public function __construct (RendererInterface $renderer, SessionInterface $session)
     {
         parent::__construct($renderer);
         $this->session = $session;
     }
 
+    /**
+     * @return bool
+     */
     public function isLoggedIn() {
         if ($this->session->get('id')) {
             return true;
@@ -28,6 +39,9 @@ class SecurityController extends AbstractController
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public function isAdmin() {
         if (!$this->isLoggedIn()) {
             return false;

@@ -6,15 +6,31 @@ namespace Quizapp\Service;
 
 use Framework\Controller\AbstractController;
 use Quizapp\Entity\QuizTemplate;
-use ReallyOrm\Test\Entity\User;
+use Quizapp\Entity\User;
 
 class QuizTemplateService extends AbstractService
 {
+    /**
+     * @param int|null $id
+     * @param string|null $className
+     * @param string|null $search
+     * @param string $searchColumn
+     * @return int
+     */
     public function getQuizzesCount(int $id = null, string $className = null, string $search = null, string $searchColumn = 'name') : int
     {
         return $this->entityRepo->count($id, User::class, $search, $searchColumn);
     }
 
+    /**
+     * @param int|null $id
+     * @param array $sorts
+     * @param int $page
+     * @param int $limit
+     * @param string|null $search
+     * @param string $searchColumn
+     * @return array|\ReallyOrm\Entity\EntityInterface[]
+     */
     public function getQuizzes(int $id = null, array $sorts = [], int $page = 1, int $limit = 5, string $search = null, string $searchColumn = 'name')
     {
         if ($id) {
@@ -24,6 +40,10 @@ class QuizTemplateService extends AbstractService
         return $this->entityRepo->findBy([], $sorts, ($page-1)*$limit, $limit, $search, $searchColumn);
     }
 
+    /**
+     * @param int $userID
+     * @param array $data
+     */
     public function addQuiz (int $userID, array $data) {
         $quizTemplate = new QuizTemplate();
         $quizTemplate->setText($data['text']);
@@ -38,14 +58,26 @@ class QuizTemplateService extends AbstractService
         $this->entityRepo->insertOnLinkTable($quizTemplate, $questions);
     }
 
+    /**
+     * @return mixed
+     */
     public function getAllQuestions() {
         return $this->entityRepo->getAllQuestions();
     }
 
+    /**
+     * @param int $id
+     * @return \ReallyOrm\Entity\EntityInterface|null
+     */
     public function getQuiz(int $id) {
         return $this->entityRepo->find($id);
     }
 
+    /**
+     * @param int $userid
+     * @param int $id
+     * @param array $data
+     */
     public function editQuiz(int $userid, int $id, array $data) {
         $quiz = $this->getQuiz($id);
         $quiz->setText($data['text']);
@@ -61,12 +93,19 @@ class QuizTemplateService extends AbstractService
 
     }
 
+    /**
+     * @param int $id
+     */
     public function deleteQuiz(int $id) {
         $quiz = $this->entityRepo->find($id);
         $this->entityRepo->deleteRelation($id);
         $this->entityRepo->delete($quiz);
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function getSelectedQuestions(int $id) {
         return $this->entityRepo->getSelectedQuestions($id);
     }

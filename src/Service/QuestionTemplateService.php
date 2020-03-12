@@ -11,7 +11,10 @@ use ReallyOrm\Entity\EntityInterface;
 
 class QuestionTemplateService extends AbstractService
 {
-
+    /**
+     * @param array $data
+     * @param int $userid
+     */
     public function addQuestion (array $data, int $userid) {
         $question = new QuestionTemplate();
         $question->setText($data['text']);
@@ -30,6 +33,15 @@ class QuestionTemplateService extends AbstractService
 
     }
 
+    /**
+     * @param int $userID
+     * @param array $sorts
+     * @param int $page
+     * @param int $limit
+     * @param string|null $search
+     * @param string $searchColumn
+     * @return array
+     */
     public function getQuestions(int $userID, array $sorts = [], int $page = 1, int $limit = 5, string $search = null, string $searchColumn = 'text') : array
     {
 
@@ -41,6 +53,9 @@ class QuestionTemplateService extends AbstractService
         return $this->entityRepo->count($userID, User::class, $search, $searchColumn);
     }
 
+    /**
+     * @param int $id
+     */
     public function deleteQuestion (int $id)
     {
         $question = $this->entityRepo->find($id);
@@ -48,10 +63,18 @@ class QuestionTemplateService extends AbstractService
         $this->entityRepo->delete($question);
     }
 
+    /**
+     * @param int $id
+     * @return EntityInterface|null
+     */
     public function getQuestion (int $id) : ?EntityInterface {
         return $this->entityRepo->find($id);
     }
 
+    /**
+     * @param int $id
+     * @param array $data
+     */
     public function editQuestion (int $id, array $data) {
         $question = $this->getQuestion($id);
         $question->setText($data['text']);
