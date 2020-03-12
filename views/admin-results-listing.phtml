@@ -30,7 +30,7 @@
     <div class="d-flex flex-column flex-md-row align-items-center p-3 mb-3 bg-light border-bottom shadow-sm">
         <h5 class="my-0 mr-md-auto font-weight-normal">Project name</h5>
         <nav class="my-2 my-md-0 mr-md-3">
-            <span class="p-2 text-dark">Hello, Admin name!</span>
+            <span class="p-2 text-dark">Hello, <?php echo $userName ?></span>
         </nav>
         <a class="btn btn-danger" href="/logout">Logout</a>
     </div>
@@ -55,7 +55,7 @@
                 <form action="">
                     <label for="userSearch">User search</label>
                     <div class="input-group">
-                        <input type="text" id="userSearch" class="form-control" placeholder="">
+                        <input type="text" id="userSearch" class="form-control" name = "user" placeholder="<?php echo $search ?>">
                         <div class="input-group-append">
                             <button class="btn btn-secondary" type="submit">
                                 <i class="fa fa-search"></i>

@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ToniCodrea/mvc-framework-skeleton.git",
-                "reference": "faebb39c7e38e1a7d1543517c5b6311e57d1fb4a"
+                "reference": "ce0033ca430b166547ee8f2c00a29c9f6adba67f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ToniCodrea/mvc-framework-skeleton/zipball/faebb39c7e38e1a7d1543517c5b6311e57d1fb4a",
-                "reference": "faebb39c7e38e1a7d1543517c5b6311e57d1fb4a",
+                "url": "https://api.github.com/repos/ToniCodrea/mvc-framework-skeleton/zipball/ce0033ca430b166547ee8f2c00a29c9f6adba67f",
+                "reference": "ce0033ca430b166547ee8f2c00a29c9f6adba67f",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
             "support": {
                 "source": "https://github.com/ToniCodrea/mvc-framework-skeleton/tree/master"
             },
-            "time": "2020-03-11T17:56:51+00:00"
+            "time": "2020-03-12T14:39:27+00:00"
         },
         {
             "name": "myclabs/deep-copy",

@@ -13,36 +13,40 @@ use Framework\Http\Stream;
 use Framework\Routing\RouteMatch;
 use Quizapp\Contracts\ServiceInterface;
 
-class TextInstanceController extends AbstractController
+class TextInstanceController extends SecurityController
 {
     private $answerService;
-    private $session;
 
-    public function __construct (RendererInterface $renderer, ServiceInterface $answerService, SessionInterface $session)
+    public function __construct (RendererInterface $renderer, SessionInterface $session, ServiceInterface $answerService)
     {
-        parent::__construct($renderer);
+        parent::__construct($renderer, $session);
         $this->answerService = $answerService;
-        $this->session = $session;
     }
 
     public function next (RouteMatch $routeMatch, Request $request) {
-        $nextQuestion = $routeMatch->getRequestAttributes()['next'];
-        $textID = $routeMatch->getRequestAttributes()['id'];
-        $text = $request->getParameter('answer');
-        $this->answerService->save($textID, $text);
+        if ($this->isLoggedIn()) {
+            $nextQuestion = $routeMatch->getRequestAttributes()['next'];
+            $textID = $routeMatch->getRequestAttributes()['id'];
+            $text = $request->getParameter('answer');
+            $this->answerService->save($textID, $text);
 
-        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/question'.$nextQuestion;
+            $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/question/'.$nextQuestion;
 
-        return $this->redirect($location, 301);
+            return $this->redirect($location, 301);
+        }
+        return $this->renderer->renderException(['message' => 'Forbidden'], 403);
     }
 
     public function save (RouteMatch $routeMatch, Request $request) {
-        $textID = $routeMatch->getRequestAttributes()['id'];
-        $text = $request->getParameter('answer');
-        $this->answerService->save($textID, $text);
+        if ($this->isLoggedIn()) {
+            $textID = $routeMatch->getRequestAttributes()['id'];
+            $text = $request->getParameter('answer');
+            $this->answerService->save($textID, $text);
 
-        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/review';
+            $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/review';
 
-        return $this->redirect($location, 301);
+            return $this->redirect($location, 301);
+        }
+        return $this->renderer->renderException(['message' => 'Forbidden'], 403);
     }
 }

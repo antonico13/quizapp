@@ -20,35 +20,57 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <!--Custom css-->
-    <link rel="stylesheet" href="assets/css/custom-css.css">
+    <link rel="stylesheet" href="/assets/css/custom-css.css">
 
-    <title>Admin - dashboard</title>
+    <title>Admin - Quiz details</title>
 </head>
 
 <body>
     <!--Header-->
     <div class="d-flex flex-column flex-md-row align-items-center p-3 mb-3 bg-light border-bottom shadow-sm">
         <h5 class="my-0 mr-md-auto font-weight-normal">Project name</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <span class="p-2 text-dark">Hello, <?php echo $userName ?></span>
+        </nav>
         <a class="btn btn-secondary" href="/logout">Logout</a>
     </div>
 
     <!--Breadcrumbs-->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb px-3 py-0 mb-3">
-            <li class="breadcrumb-item active" aria-current="page"><a href="/admin">Dashboard</a></li>
+            <li class="breadcrumb-item" ><a href="/admin">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Quiz details</li>
         </ol>
     </nav>
 
-    <!--Main content-->
     <div class="container">
         <!--Page title block-->
         <div class="text-center">
-            <h1>Welcome, <?php echo $name ?> </h1>
-            <a href="/admin/quiz" class="btn btn-primary m-2">Quizzes</a>
-            <a href="/admin/user" class="btn btn-primary m-2">Users</a>
-            <a href="/admin/question" class="btn btn-primary m-2">Questions</a>
-            <a href="/admin/results" class="btn btn-primary m-2">Results</a>
+            <h1>New quiz</h1>
         </div>
+
+        <!--Quiz details form-->
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="quizName">Name</label>
+                <input type="text" class="form-control" id="quizName" name = "name" placeholder="Quiz name" required="required">
+            </div>
+            <div class="form-group">
+                <label for="quizDescription">Description</label>
+                <input type="text" class="form-control" id="quizDescription" name = "text" placeholder="Quiz description" required="required">
+            </div>
+            <div class="form-group">
+                <label for="quizQuestions">Questions</label>
+                <select class="form-control" id="quizQuestions" name = "questions[]" required="required" multiple>
+                    <?php foreach ($questions as $question): ?>
+                    <option value="<?php echo $question->getID() ?>"> <?php echo $question->getText() ?> </option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Save quiz</button>
+            </div>
+        </form>
     </div>
 </body>
 </html>

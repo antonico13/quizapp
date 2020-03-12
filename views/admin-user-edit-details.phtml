@@ -30,7 +30,7 @@
 <div class="d-flex flex-column flex-md-row align-items-center p-3 mb-3 bg-light border-bottom shadow-sm">
     <h5 class="my-0 mr-md-auto font-weight-normal">Project name</h5>
     <nav class="my-2 my-md-0 mr-md-3">
-        <span class="p-2 text-dark">Hello, Admin name!</span>
+        <span class="p-2 text-dark">Hello, <?php echo $userName ?></span>
     </nav>
     <a class="btn btn-danger" href="/logout">Logout</a>
 </div>
@@ -53,19 +53,19 @@
     <form action="" method="post">
         <div class="form-group">
             <label for="userName">Name</label>
-            <input type="text" class="form-control" id="userName" name = "name" value="<?php echo $user->getName() ?>">
+            <input type="text" class="form-control" id="userName" name = "name" value="<?php echo $user->getName() ?>" required="required">
         </div>
         <div class="form-group">
             <label for="userEmail">Email</label>
-            <input type="email" class="form-control" id="userEmail" name = "email" value="<?php echo $user->getEmail() ?>">
+            <input type="email" class="form-control" id="userEmail" name = "email" value="<?php echo $user->getEmail() ?>" required="required">
         </div>
         <div class="form-group">
             <label for="userPassword">Password</label>
-            <input type="password" class="form-control" id="userPassword" name = "password" placeholder="User password">
+            <input type="password" class="form-control" id="userPassword" name = "password" placeholder="User password" required="required">
         </div>
         <div class="form-group">
             <label for="userRole">Role</label>
-            <select class="form-control" id="userRole" name = "role">
+            <select class="form-control" id="userRole" name = "role" required="required">
                 <option value="admin">Admin</option>
                 <option value="user" selected="selected">User</option>
             </select>

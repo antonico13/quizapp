@@ -10,10 +10,12 @@ use Framework\Renderer\Renderer;
 use Framework\Router\Router;
 use Framework\Session\Session;
 use HighlightLib\CodeHighlight;
+use Quizapp\Controller\ExceptionController;
 use Quizapp\Controller\QuestionInstanceController;
 use Quizapp\Controller\QuestionTemplateController;
 use Quizapp\Controller\QuizInstanceController;
 use Quizapp\Controller\QuizTemplateController;
+use Quizapp\Controller\SecurityController;
 use Quizapp\Controller\TextInstanceController;
 use Quizapp\Controller\TextTemplateController;
 use Quizapp\Controller\UserController;
@@ -54,6 +56,7 @@ $container->setParameter('user', $config['database']['user']);
 $container->setParameter('pass', $config['database']['pass']);
 $container->setParameter('options', $config['options']);
 $container->setParameter('highlight', $config['highlight']);
+$container->setParameter('exceptionHandler', $config['routing']['routes']['exception']);
 
 $container->register(PDO::class, PDO::class)
     ->addArgument('%dsn%')
@@ -127,14 +130,19 @@ $container->register(RendererInterface::class, Renderer::class)
 
 $container->register(SessionInterface::class, Session::class);
 
+$container->register(SecurityController::class,SecurityController::class)
+    ->addArgument(new Reference(RendererInterface::class))
+    ->addArgument(new Reference(SessionInterface::class))
+    ->addTag('controller');
+
 $container->register(UserService::class, UserService::class)
         ->addArgument(new Reference(RepositoryManagerInterface::class))
         ->addArgument(new Reference(UserRepository::class));
 
 $container->register(UserController::class,UserController::class)
     ->addArgument(new Reference(RendererInterface::class))
-    ->addArgument(new Reference(UserService::class))
     ->addArgument(new Reference(SessionInterface::class))
+    ->addArgument(new Reference(UserService::class))
     ->addTag('controller');
 
 $container->register(QuestionTemplateService::class, QuestionTemplateService::class)
@@ -143,8 +151,8 @@ $container->register(QuestionTemplateService::class, QuestionTemplateService::cl
 
 $container->register(QuestionTemplateController::class,QuestionTemplateController::class)
     ->addArgument(new Reference(RendererInterface::class))
-    ->addArgument(new Reference(QuestionTemplateService::class))
     ->addArgument(new Reference(SessionInterface::class))
+    ->addArgument(new Reference(QuestionTemplateService::class))
     ->addTag('controller');
 
 $container->register(QuizTemplateService::class, QuizTemplateService::class)
@@ -153,8 +161,8 @@ $container->register(QuizTemplateService::class, QuizTemplateService::class)
 
 $container->register(QuizTemplateController::class,QuizTemplateController::class)
     ->addArgument(new Reference(RendererInterface::class))
-    ->addArgument(new Reference(QuizTemplateService::class))
     ->addArgument(new Reference(SessionInterface::class))
+    ->addArgument(new Reference(QuizTemplateService::class))
     ->addTag('controller');
 
 $container->register(TextTemplateService::class, TextTemplateService::class)
@@ -163,8 +171,8 @@ $container->register(TextTemplateService::class, TextTemplateService::class)
 
 $container->register(TextTemplateController::class,TextTemplateController::class)
     ->addArgument(new Reference(RendererInterface::class))
-    ->addArgument(new Reference(TextTemplateService::class))
     ->addArgument(new Reference(SessionInterface::class))
+    ->addArgument(new Reference(TextTemplateService::class))
     ->addTag('controller');
 
 $container->register(QuestionInstanceService::class, QuestionInstanceService::class)
@@ -174,8 +182,8 @@ $container->register(QuestionInstanceService::class, QuestionInstanceService::cl
 
 $container->register(QuestionInstanceController::class,QuestionInstanceController::class)
     ->addArgument(new Reference(RendererInterface::class))
-    ->addArgument(new Reference(QuestionInstanceService::class))
     ->addArgument(new Reference(SessionInterface::class))
+    ->addArgument(new Reference(QuestionInstanceService::class))
     ->addTag('controller');
 
 $container->register(QuizInstanceService::class, QuizInstanceService::class)
@@ -184,8 +192,8 @@ $container->register(QuizInstanceService::class, QuizInstanceService::class)
 
 $container->register(QuizInstanceController::class,QuizInstanceController::class)
     ->addArgument(new Reference(RendererInterface::class))
-    ->addArgument(new Reference(QuizInstanceService::class))
     ->addArgument(new Reference(SessionInterface::class))
+    ->addArgument(new Reference(QuizInstanceService::class))
     ->addTag('controller');
 
 $container->register(TextInstanceService::class, TextInstanceService::class)
@@ -195,8 +203,12 @@ $container->register(TextInstanceService::class, TextInstanceService::class)
 
 $container->register(TextInstanceController::class,TextInstanceController::class)
     ->addArgument(new Reference(RendererInterface::class))
-    ->addArgument(new Reference(TextInstanceService::class))
     ->addArgument(new Reference(SessionInterface::class))
+    ->addArgument(new Reference(TextInstanceService::class))
+    ->addTag('controller');
+
+$container->register(ExceptionController::class,ExceptionController::class)
+    ->addArgument(new Reference(RendererInterface::class))
     ->addTag('controller');
 
 

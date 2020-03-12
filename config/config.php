@@ -285,6 +285,14 @@ return [
                     'id' => '\d+'
                 ]
             ],
+            'exception' => [
+                Router::CONFIG_KEY_METHOD => 'GET',
+                Router::CONFIG_KEY_CONTROLLER => 'exception',
+                Router::CONFIG_KEY_ACTION => 'exception',
+                Router::CONFIG_KEY_PATH => '/exception',
+                Router::CONFIG_KEY_ATTRIBUTES => [
+                ]
+            ],
         ],
     ],
     'database' => [
