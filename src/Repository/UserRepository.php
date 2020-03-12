@@ -39,31 +39,4 @@ class UserRepository extends AbstractRepository
         return $this->hydrator->hydrateMany($className, $row);
     }
 
-    public function count () {
-        $sql = 'SELECT COUNT(*) FROM '.$this->getTableName();
-        $stm = $this->pdo->prepare($sql);
-        $stm->execute();
-
-        return $stm->fetch()['COUNT(*)'];
-    }
-
-    public function findByCount(array $filters): int
-    {
-        $sql = 'SELECT COUNT(*) FROM '.$this->getTableName().' WHERE ';
-        foreach ($filters as $fieldName => $value) {
-            $sql .= $fieldName .' = :' . $fieldName . ' AND ';
-        }
-        $sql = substr($sql, 0, -5);
-
-        $stm = $this->pdo->prepare($sql);
-
-        foreach ($filters as $fieldName => $value) {
-            $stm->bindValue(':' . $fieldName, $value);
-        }
-
-        $stm->execute();
-        return $stm->fetch()['COUNT(*)'];
-
-    }
-
 }

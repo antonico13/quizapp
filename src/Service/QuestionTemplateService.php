@@ -6,6 +6,7 @@ namespace Quizapp\Service;
 
 use Quizapp\Entity\QuestionTemplate;
 use Quizapp\Entity\TextTemplate;
+use Quizapp\Entity\User;
 use ReallyOrm\Entity\EntityInterface;
 
 class QuestionTemplateService extends AbstractService
@@ -29,25 +30,15 @@ class QuestionTemplateService extends AbstractService
 
     }
 
-    public function getQuestions(int $userid, int $page = 1, int $limit = 5) : array
+    public function getQuestions(int $userID, array $sorts = [], int $page = 1, int $limit = 5, string $search = null, string $searchColumn = 'text') : array
     {
 
-        return $this->entityRepo->findBy(['userid' => $userid], ['id' => 'ASC'], ($page-1)*$limit, $limit);
+        return $this->entityRepo->findBy(['userid' => $userID], $sorts, ($page-1)*$limit, $limit, $search, $searchColumn);
     }
 
-    public function getQuestionsCount(int $userid) : int
+    public function getQuestionsCount(int $userID, string $search = null, string $searchColumn = 'text') : int
     {
-        return $this->entityRepo->countBy($userid);
-    }
-
-    public function getQuestionsCountSearch(int $userid, string $search) : int
-    {
-        return $this->entityRepo->countBySearch($userid, $search);
-    }
-
-    public function getQuestionsSearch(int $userid, string $text, int $page = 1, int $limit = 5) : array
-    {
-        return $this->entityRepo->findBySearch(['userid' => $userid], ['id' => 'ASC'], ($page-1)*$limit, $limit, $text);
+        return $this->entityRepo->count($userID, User::class, $search, $searchColumn);
     }
 
     public function deleteQuestion (int $id)

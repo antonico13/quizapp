@@ -10,6 +10,7 @@ use Quizapp\Entity\QuizInstance;
 use Quizapp\Entity\QuizTemplate;
 use Quizapp\Entity\TextInstance;
 use Quizapp\Entity\TextTemplate;
+use ReallyOrm\Test\Entity\User;
 
 class QuizInstanceService extends AbstractService
 {
@@ -78,32 +79,17 @@ class QuizInstanceService extends AbstractService
         $quiz->save();
     }
 
-    public function getQuizzesCount()
+    public function getQuizzesCount(int $id = null, string $className = null, string $search = null, string $searchColumn = 'name') : int
     {
-        return $this->entityRepo->count();
+        return $this->entityRepo->count($id, $className, $search, $searchColumn);
     }
 
-    public function getQuizzesCountSearch(?int $id, string $search) : int
-    {
-
-        return $this->entityRepo->countBySearch($id, $search);
-    }
-
-    public function getQuizzes (?int $id, int $page = 1, int $limit = 5) : array
+    public function getQuizzes(int $id = null, array $sorts = [], int $page = 1, int $limit = 5, string $search = null, string $searchColumn = 'name')
     {
         if ($id) {
-            return $this->entityRepo->findBy(['userid' => $id], ['id' => 'ASC'], ($page - 1) * $limit, $limit);
+            return $this->entityRepo->findBy(['userid' => $id], $sorts, ($page-1)*$limit, $limit, $search, $searchColumn);
         }
 
-        return $this->entityRepo->findBy([], ['id' => 'ASC'], ($page-1)*$limit, $limit);
-    }
-
-    public function getQuizzesSearch(?int $id, string $text, int $page = 1, int $limit = 5)
-    {
-        if ($id) {
-            return $this->entityRepo->findBySearch(['userid' => $id], ['id' => 'ASC'], ($page-1)*$limit, $limit, $text);
-        }
-
-        return $this->entityRepo->findBySearch([], ['id' => 'ASC'], ($page-1)*$limit, $limit, $text);
+        return $this->entityRepo->findBy([], $sorts, ($page-1)*$limit, $limit, $search, $searchColumn);
     }
 }

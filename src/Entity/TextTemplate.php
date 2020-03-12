@@ -32,8 +32,8 @@ class TextTemplate extends AbstractEntity
         return $this->id;
     }
 
-    public function setQuestionID(int $id) {
-        $this->getRepository()->setForeignKey($id, $this);
+    public function setQuestionID(int $questionTemplateID) {
+        $this->getRepository()->setForeignID($questionTemplateID, QuestionTemplate::class, $this);
     }
 
     public function findBy(int $id) {

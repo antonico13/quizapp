@@ -24,52 +24,46 @@ class QuizTemplateController extends AbstractController
         $this->quizService = $quizService;
         $this->session = $session;
     }
-    public function getQuizzes( RouteMatch $routeMatch, Request $request)
+    public function getQuizzes (RouteMatch $routeMatch, Request $request)
     {
         $userid = $this->session->get('id');
-        $count = $this->quizService->getQuizzesCount($userid);
         $page = $request->getParameter('page');
         $search = $request->getParameter('search');
+        $sorts = $request->getParameter('sorts');
 
-
-        if ($search) {
-            $count = $this->quizService->getQuizzesCountSearch($userid, $search);
+        if ($sorts == null) {
+            $sorts = [];
         }
+        $count = $this->quizService->getQuizzesCount($userid, null, $search);
 
         if ($page == null || $page == 0 || $page > $count || !is_numeric($page)) {
             $page = 1;
         }
 
-        $data = $this->quizService->getQuizzes($userid, $page);
-
-        if ($search) {
-            $data = $this->quizService->getQuizzesSearch($userid, $search, $page);
-        }
-
         $count = ceil($count/5);
+        $data = $this->quizService->getQuizzes($userid, $sorts, $page, 5, $search);
 
         return $this->renderer->renderView('admin-quizzes-listing.phtml', ['data' => $data, 'count' => $count, 'page' => $page, 'search' => $search]);
     }
 
-    public function getAllQuizzes( RouteMatch $routeMatch, Request $request)
+    public function getAllQuizzes (RouteMatch $routeMatch, Request $request)
     {
-        $count = $this->quizService->getQuizzesCount();
+        $userid = $this->session->get('id');
         $page = $request->getParameter('page');
         $search = $request->getParameter('search');
+        $sorts = $request->getParameter('sorts');
 
-        if ($search) {
-            $count = $this->quizService->getQuizzesCountSearch(null, $search);
+        if ($sorts == null) {
+            $sorts = [];
         }
+
+        $count = $this->quizService->getQuizzesCount(null, null, $search);
 
         if ($page == null || $page == 0 || $page > $count || !is_numeric($page)) {
             $page = 1;
         }
 
-        $data = $this->quizService->getQuizzes(null, $page);
-
-        if ($search) {
-            $data = $this->quizService->getQuizzesSearch(null, $search, $page);
-        }
+        $data = $this->quizService->getQuizzes(null, $sorts, $page, 5, $search);
 
         $count = ceil($count/5);
 

@@ -66,23 +66,21 @@ class QuizInstanceController extends AbstractController
 
     public function getAllQuizzes(RouteMatch $routeMatch, Request $request)
     {
-        $count = $this->quizService->getQuizzesCount();
         $page = $request->getParameter('page');
         $search = $request->getParameter('search');
+        $sorts = $request->getParameter('sort');
 
-        if ($search) {
-            $count = $this->quizService->getQuizzesCountSearch(null, $search);
-        }
+        $count = $this->quizService->getQuizzesCount(null, null, $search);
 
         if ($page == null || $page == 0 || $page > $count || !is_numeric($page)) {
             $page = 1;
         }
 
-        $data = $this->quizService->getQuizzes(null, $page);
-
-        if ($search) {
-            $data = $this->quizService->getQuizzesSearch(null, $search, $page);
+        if ($sorts == null) {
+            $sorts = [];
         }
+
+        $data = $this->quizService->getQuizzes(null, $sorts, $page, 5, $search);
 
         $count = ceil($count/5);
 

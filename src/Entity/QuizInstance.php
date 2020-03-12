@@ -37,11 +37,11 @@ class QuizInstance extends AbstractEntity
 
 
     public function setUserID($userId) {
-        $this->getRepository()->setForeignUser($userId, $this);
+        $this->getRepository()->setForeignID($userId,User::class, $this);
     }
 
     public function setQuizID($quizId) {
-        $this->getRepository()->setForeignQuiz($quizId, $this);
+        $this->getRepository()->setForeignID($quizId, QuizTemplate::class, $this);
     }
 
     public function getQuestions() {

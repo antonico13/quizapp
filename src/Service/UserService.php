@@ -39,15 +39,6 @@ class UserService extends AbstractService
         $user->save();
     }
 
-    public function getUserCount() {
-        return $this->entityRepo->count();
-    }
-
-    public function getUsers (int $page = 1, int $limit = 5) {
-
-        return $this->entityRepo->findBy([], ['id' => 'ASC'], ($page-1)*$limit, $limit);
-    }
-
     public function deleteUser (int $id)
     {
         $user = $this->entityRepo->find($id);
@@ -69,14 +60,14 @@ class UserService extends AbstractService
         $user->save();
     }
 
-    public function getUsersCountSearch(array $filters) : int
+    public function getUserCount(array $filters) : int
     {
-        return $this->entityRepo->findByCount($filters);
+        return $this->entityRepo->Count(null, null, null, null, $filters);
     }
 
-    public function getUsersSearch(array $filters, int $page, int $limit = 5) : array
+    public function getUsers(array $filters, array $sorts, int $page, int $limit = 5) : array
     {
-        return $this->entityRepo->findBy($filters, ['id' => 'ASC'], ($page-1)*$limit, $limit);
+        return $this->entityRepo->findBy($filters, $sorts, ($page-1)*$limit, $limit);
     }
 
 }

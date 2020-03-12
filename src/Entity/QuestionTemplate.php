@@ -32,8 +32,8 @@ class QuestionTemplate extends AbstractEntity
         $this->type = $type;
     }
 
-    public function setUserID($userId) {
-        $this->getRepository()->setForeignKey($userId, $this);
+    public function setUserID(int $userID) {
+        $this->getRepository()->setForeignID($userID, User::class, $this);
     }
 
     public function getAnswers() {

@@ -47,11 +47,11 @@ class TextInstance extends AbstractEntity implements TemplatedInterface
         return $obj;
     }
 
-    public function setQuestionID(int $id) {
-        $this->getRepository()->setForeignQuestion($id, $this);
+    public function setQuestionID(int $questionInstanceID) {
+        $this->getRepository()->setForeignID($questionInstanceID, QuestionInstance::class, $this);
     }
 
-    public function setTemplateID(int $id) {
-        $this->getRepository()->setForeignTemplate($id, $this);
+    public function setTemplateID(int $questionTemplateID) {
+        $this->getRepository()->setForeignID($questionTemplateID, QuestionTemplate::class, $this);
     }
 }

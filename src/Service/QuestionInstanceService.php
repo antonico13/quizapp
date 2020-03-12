@@ -6,6 +6,7 @@ namespace Quizapp\Service;
 
 use Quizapp\Entity\QuestionInstance;
 use Quizapp\Entity\QuestionTemplate;
+use Quizapp\Entity\QuizInstance;
 
 class QuestionInstanceService extends AbstractService
 {
@@ -28,7 +29,7 @@ class QuestionInstanceService extends AbstractService
     }
 
     public function count(int $quizInstanceID) {
-        return $this->entityRepo->count($quizInstanceID);
+        return $this->entityRepo->count($quizInstanceID, QuizInstance::class);
     }
 
 }

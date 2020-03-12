@@ -93,12 +93,16 @@ class UserController extends AbstractController
 
     public function getUsers (RouteMatch $routeMatch, Request $request)
     {
-        $count = $this->userService->getUserCount();
         $page = $request->getParameter('page');
         $name = $request->getParameter('search');
         $role = $request->getParameter('role');
-        $filters = [];
+        $sorts = $request->getParameter('sort');
 
+        if ($sorts == null) {
+            $sorts = [];
+        }
+
+        $filters = [];
 
         if ($name) {
             $filters['name'] = $name;
@@ -107,9 +111,7 @@ class UserController extends AbstractController
             $filters['role'] = $role;
         }
 
-        if ($filters) {
-            $count = $this->userService->getUsersCountSearch($filters);
-        }
+        $count = $this->userService->getUserCount($filters);
 
         $count = ceil($count/5);
 
@@ -117,11 +119,7 @@ class UserController extends AbstractController
             $page = 1;
         }
 
-        $data = $this->userService->getUsers($page);
-
-        if ($filters) {
-            $data = $this->userService->getUsersSearch($filters, $page);
-        }
+        $data = $this->userService->getUsers($filters, $sorts, $page, 5);
 
         return $this->renderer->renderView('admin-users-listing.phtml', ['data' => $data, 'count' => $count, 'page' => $page, 'name' => $name]);
     }

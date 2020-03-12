@@ -51,11 +51,11 @@ class QuestionInstance extends AbstractEntity implements TemplatedInterface
     }
 
     public function setTemplateID($templateId) {
-        $this->getRepository()->setForeignTemplate($templateId, $this);
+        $this->getRepository()->setForeignId($templateId,QuestionTemplate::class, $this);
     }
 
     public function setQuizID($qId) {
-        $this->getRepository()->setForeignQuiz($qId, $this);
+        $this->getRepository()->setForeignId($qId, QuizInstance::class, $this);
     }
 
     public static function createFromTemplate(EntityInterface $template) : EntityInterface {

@@ -6,50 +6,36 @@ namespace Quizapp\Service;
 
 use Framework\Controller\AbstractController;
 use Quizapp\Entity\QuizTemplate;
+use ReallyOrm\Test\Entity\User;
 
 class QuizTemplateService extends AbstractService
 {
-    public function getQuizzesCount($id = null)
+    public function getQuizzesCount(int $id = null, string $className = null, string $search = null, string $searchColumn = 'name') : int
     {
-        return $this->entityRepo->countBy($id);
+        return $this->entityRepo->count($id, User::class, $search, $searchColumn);
     }
 
-    public function getQuizzesCountSearch(?int $id, string $search) : int
-    {
-
-        return $this->entityRepo->countBySearch($id, $search);
-    }
-
-    public function getQuizzes (?int $id, int $page = 1, int $limit = 5) : array
+    public function getQuizzes(int $id = null, array $sorts = [], int $page = 1, int $limit = 5, string $search = null, string $searchColumn = 'name')
     {
         if ($id) {
-            return $this->entityRepo->findBy(['userid' => $id], ['id' => 'ASC'], ($page - 1) * $limit, $limit);
+            return $this->entityRepo->findBy(['userid' => $id], $sorts, ($page-1)*$limit, $limit, $search, $searchColumn);
         }
 
-        return $this->entityRepo->findBy([], ['id' => 'ASC'], ($page-1)*$limit, $limit);
+        return $this->entityRepo->findBy([], $sorts, ($page-1)*$limit, $limit, $search, $searchColumn);
     }
 
-    public function getQuizzesSearch(?int $id, string $text, int $page = 1, int $limit = 5)
-    {
-        if ($id) {
-            return $this->entityRepo->findBySearch(['userid' => $id], ['id' => 'ASC'], ($page-1)*$limit, $limit, $text);
-        }
-
-        return $this->entityRepo->findBySearch([], ['id' => 'ASC'], ($page-1)*$limit, $limit, $text);
-    }
-
-    public function addQuiz (int $id, array $data) {
-        $quiz= new QuizTemplate();
-        $quiz->setText($data['text']);
-        $quiz->setName($data['name']);
+    public function addQuiz (int $userID, array $data) {
+        $quizTemplate = new QuizTemplate();
+        $quizTemplate->setText($data['text']);
+        $quizTemplate->setName($data['name']);
 
         $questions = $data['questions'];
 
-        $this->repoManager->register($quiz);
-        $quiz->save();
+        $this->repoManager->register($quizTemplate);
+        $quizTemplate->save();
 
-        $this->entityRepo->setForeignKey($id, $quiz);
-        $this->entityRepo->insertOnLinkTable($quiz, $questions);
+        $this->entityRepo->setForeignID($userID, User::class, $quizTemplate);
+        $this->entityRepo->insertOnLinkTable($quizTemplate, $questions);
     }
 
     public function getAllQuestions() {
@@ -70,7 +56,7 @@ class QuizTemplateService extends AbstractService
         $this->repoManager->register($quiz);
         $quiz->save();
 
-        $this->entityRepo->setForeignKey($userid, $quiz);
+        $this->entityRepo->setForeignID($userid, User::class, $quiz);
         $this->entityRepo->insertOnLinkTable($quiz, $questions);
 
     }

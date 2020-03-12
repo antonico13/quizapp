@@ -57,25 +57,22 @@ class QuestionTemplateController extends AbstractController
 
     public function getQuestions (RouteMatch $routeMatch, Request $request) {
         $id = $this->session->get('id');
-        $count = $this->questionService->getQuestionsCount($id);
         $page = $request->getParameter('page');
         $search = $request->getParameter('search');
+        $sorts = $request->getParameter('sort');
+
+        $count = $this->questionService->getQuestionsCount($id, $search);
+        $count = ceil($count/5);
 
         if ($page == null || $page == 0 || $page > $count || !is_numeric($page)) {
             $page = 1;
         }
 
-        if ($search) {
-            $count = $this->questionService->getQuestionsCountSearch($id, $search);
+        if ($sorts == null) {
+            $sorts = [];
         }
 
-        $data = $this->questionService->getQuestions($page);
-
-        if ($search) {
-            $data = $this->questionService->getQuestionsSearch($id, $search, $page);
-        }
-
-        $count = ceil($count/5);
+        $data = $this->questionService->getQuestions($id, $sorts, $page,  5, $search);
 
         return $this->renderer->renderView('admin-questions-listing.html', ['data' => $data, 'count' => $count, 'page' => $page, 'search' => $search]);
     }
