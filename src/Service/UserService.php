@@ -14,11 +14,15 @@ class UserService extends AbstractService
     public function login (string $email, string $password)
     {
         $user = $this->entityRepo->findOneBy(['email' => $email]);
-        if ($password === $user->getPassword()) {
-            return [$user->getRole(), $user->getId(), $user->getName()];
+
+        if (!$user) {
+            return null;
+        }
+        if ($password !== $user->getPassword()) {
+            return null;
         }
 
-        return null;
+        return [$user->getRole(), $user->getId(), $user->getName()];
     }
 
     public function getQuizzes(int $id) : array
@@ -32,11 +36,16 @@ class UserService extends AbstractService
         $user = new User();
         $user->setName($data['name']);
         $user->setEmail($data['email']);
+        if ($this->entityRepo->findOneBy(['email'=>$user->getEmail()])) {
+            return null;
+        }
         $user->setRole($data['role']);
         $user->setPassword(hash('sha256', $data['password']));
 
         $this->repoManager->register($user);
         $user->save();
+
+        return true;
     }
 
     public function deleteUser (int $id)
@@ -52,12 +61,19 @@ class UserService extends AbstractService
 
     public function editUser (int $id, array $data) {
         $user = $this->getUser($id);
+        if ($user->getEmail() != $data['email']) {
+            if ($this->entityRepo->findOneBy(['email'=>$data['email']])) {
+                return null;
+            }
+        }
         $user->setName($data['name']);
         $user->setEmail($data['email']);
         $user->setPassword($data['email']);
         $user->setRole($data['role']);
         $this->repoManager->register($user);
         $user->save();
+
+        return true;
     }
 
     public function getUserCount(array $filters) : int

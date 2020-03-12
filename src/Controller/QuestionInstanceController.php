@@ -36,6 +36,6 @@ class QuestionInstanceController extends SecurityController
             $answers = $question->getAnswers();
             return $this->renderer->renderView('candidate-quiz-page.phtml', ['question' => $question, 'quizInstanceID' => $quizInstanceID, 'questionNumber' => $questionInstanceID, 'count' => $count, 'answers' => $answers, 'userName' => $this->session->get('name')]);
         }
-        return $this->sendException($request);
+        return $this->renderer->renderException(['message' => 'Forbidden'], 403);
     }
 }

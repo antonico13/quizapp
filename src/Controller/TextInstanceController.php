@@ -24,29 +24,31 @@ class TextInstanceController extends SecurityController
     }
 
     public function next (RouteMatch $routeMatch, Request $request) {
-        if ($this->isLoggedIn()) {
-            $nextQuestion = $routeMatch->getRequestAttributes()['next'];
-            $textID = $routeMatch->getRequestAttributes()['id'];
-            $text = $request->getParameter('answer');
-            $this->answerService->save($textID, $text);
-
-            $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/question/'.$nextQuestion;
-
-            return $this->redirect($location, 301);
+        if (!$this->isLoggedIn()) {
+            return $this->renderer->renderException(['message' => 'Forbidden'], 403);
         }
-        return $this->renderer->renderException(['message' => 'Forbidden'], 403);
+
+        $nextQuestion = $routeMatch->getRequestAttributes()['next'];
+        $textID = $routeMatch->getRequestAttributes()['id'];
+        $text = $request->getParameter('answer');
+        $this->answerService->save($textID, $text);
+
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/question/'.$nextQuestion;
+
+        return $this->redirect($location, 301);
     }
 
     public function save (RouteMatch $routeMatch, Request $request) {
-        if ($this->isLoggedIn()) {
-            $textID = $routeMatch->getRequestAttributes()['id'];
-            $text = $request->getParameter('answer');
-            $this->answerService->save($textID, $text);
-
-            $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/review';
-
-            return $this->redirect($location, 301);
+        if (!$this->isLoggedIn()) {
+            return $this->renderer->renderException(['message' => 'Forbidden'], 403);
         }
-        return $this->renderer->renderException(['message' => 'Forbidden'], 403);
+
+        $textID = $routeMatch->getRequestAttributes()['id'];
+        $text = $request->getParameter('answer');
+        $this->answerService->save($textID, $text);
+
+        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/review';
+
+        return $this->redirect($location, 301);
     }
 }

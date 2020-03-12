@@ -41,6 +41,11 @@
         <div>
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" name = "password" class="form-control" placeholder="Password" required="required">
+            <?php if ($notFound == true): ?>
+                <div class="alert alert-danger" role="alert">
+                    Email or password incorrect
+                </div>
+            <?php endif ?>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>

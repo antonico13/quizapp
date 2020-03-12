@@ -29,17 +29,13 @@ class SecurityController extends AbstractController
     }
 
     public function isAdmin() {
-        if ($this->isLoggedIn()) {
-            if ($this->session->get('role') == 'admin') {
-                return true;
-            }
+        if (!$this->isLoggedIn()) {
+            return false;
+        }
+        if ($this->session->get('role') != 'admin') {
+            return false;
         }
 
-        return false;
-    }
-
-    public function sendException(Request $request) {
-        $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/exception';
-        return $this->redirect($location);
+        return true;
     }
 }
