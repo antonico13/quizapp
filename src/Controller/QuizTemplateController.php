@@ -9,6 +9,7 @@ use Framework\Contracts\SessionInterface;
 use Framework\Http\Request;
 use Framework\Routing\RouteMatch;
 use Quizapp\Contracts\ServiceInterface;
+use Quizapp\Entity\QuizTemplate;
 
 class QuizTemplateController extends SecurityController
 {
@@ -175,10 +176,19 @@ class QuizTemplateController extends SecurityController
         }
 
         $id = $routeMatch->getRequestAttributes()['id'];
+        /**
+         * @var QuizTemplate $quiz
+         */
         $quiz = $this->quizService->getQuiz($id);
+
         if ($quiz == null) {
             return $this->renderer->renderException(['message' => 'Not found'], 404);
         }
+
+        if ($quiz->getUser()->getID() != $this->session->get('id')) {
+            return $this->renderer->renderException(['message' => 'Forbidden'], 403);
+        }
+
         $questions = $this->quizService->getAllQuestions();
         $selectedQuestions = $this->quizService->getSelectedQuestions($id);
         $selected = [];
