@@ -4,6 +4,7 @@
 namespace Quizapp\Entity;
 
 use ReallyOrm\Entity\AbstractEntity;
+use ReallyOrm\Entity\EntityInterface;
 
 class QuestionTemplate extends AbstractEntity
 {
@@ -43,6 +44,13 @@ class QuestionTemplate extends AbstractEntity
      */
     public function setUserID(int $userID) {
         $this->getRepository()->setForeignID($userID, User::class, $this);
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser() : User {
+        return $this->getRepository()->getForeignEntity(User::class, $this);
     }
 
     /**

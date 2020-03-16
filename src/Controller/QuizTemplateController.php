@@ -7,8 +7,10 @@ namespace Quizapp\Controller;
 use Framework\Contracts\RendererInterface;
 use Framework\Contracts\SessionInterface;
 use Framework\Http\Request;
+use Framework\Http\Response;
 use Framework\Routing\RouteMatch;
 use Quizapp\Contracts\ServiceInterface;
+use Quizapp\Entity\QuizTemplate;
 
 class QuizTemplateController extends SecurityController
 {
@@ -32,7 +34,7 @@ class QuizTemplateController extends SecurityController
     /**
      * @param RouteMatch $routeMatch
      * @param Request $request
-     * @return \Framework\Http\Response
+     * @return Response
      */
     public function getQuizzes (RouteMatch $routeMatch, Request $request)
     {
@@ -76,7 +78,7 @@ class QuizTemplateController extends SecurityController
     /**
      * @param RouteMatch $routeMatch
      * @param Request $request
-     * @return \Framework\Http\Response
+     * @return Response
      */
     public function getAllQuizzes (RouteMatch $routeMatch, Request $request)
     {
@@ -117,7 +119,7 @@ class QuizTemplateController extends SecurityController
     /**
      * @param RouteMatch $routeMatch
      * @param Request $request
-     * @return \Framework\Http\Response
+     * @return Response
      */
     public function addQuizzes (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
@@ -141,7 +143,7 @@ class QuizTemplateController extends SecurityController
     /**
      * @param RouteMatch $routeMatch
      * @param Request $request
-     * @return \Framework\Http\Response
+     * @return Response
      */
     public function add (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
@@ -163,7 +165,7 @@ class QuizTemplateController extends SecurityController
     /**
      * @param RouteMatch $routeMatch
      * @param Request $request
-     * @return \Framework\Http\Response
+     * @return Response
      */
     public function editQuizzes (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
@@ -176,9 +178,15 @@ class QuizTemplateController extends SecurityController
 
         $id = $routeMatch->getRequestAttributes()['id'];
         $quiz = $this->quizService->getQuiz($id);
-        if ($quiz == null) {
+
+        if (!$quiz) {
             return $this->renderer->renderException(['message' => 'Not found'], 404);
         }
+
+        if ($quiz->getUser()->getID() !== $this->session->get('id')) {
+            return $this->renderer->renderException(['message' => 'Forbidden'], 403);
+        }
+
         $questions = $this->quizService->getAllQuestions();
         $selectedQuestions = $this->quizService->getSelectedQuestions($id);
         $selected = [];
@@ -199,7 +207,7 @@ class QuizTemplateController extends SecurityController
     /**
      * @param RouteMatch $routeMatch
      * @param Request $request
-     * @return \Framework\Http\Response
+     * @return Response
      */
     public function edit (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {
@@ -224,7 +232,7 @@ class QuizTemplateController extends SecurityController
     /**
      * @param RouteMatch $routeMatch
      * @param Request $request
-     * @return \Framework\Http\Response
+     * @return Response
      */
     public function delete (RouteMatch $routeMatch, Request $request) {
         if (!$this->isLoggedIn()) {

@@ -171,9 +171,15 @@ class QuestionTemplateController extends SecurityController
          * @var $question QuestionTemplate
          */
         $question = $this->questionService->getQuestion($id);
-        if ($question == null) {
+
+        if (!$question) {
             return $this->renderer->renderException(['message' => 'Question not found'], 404);
         }
+
+        if ($question->getUser()->getID() !== $this->session->get('id')) {
+            return $this->renderer->renderException(['message' => 'Forbidden'], 403);
+        }
+
         $answers = $question->getAnswers();
 
         return $this->renderer->renderView
