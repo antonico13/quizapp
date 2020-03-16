@@ -176,16 +176,13 @@ class QuizTemplateController extends SecurityController
         }
 
         $id = $routeMatch->getRequestAttributes()['id'];
-        /**
-         * @var QuizTemplate $quiz
-         */
         $quiz = $this->quizService->getQuiz($id);
 
-        if ($quiz == null) {
+        if (!$quiz) {
             return $this->renderer->renderException(['message' => 'Not found'], 404);
         }
 
-        if ($quiz->getUser()->getID() != $this->session->get('id')) {
+        if ($quiz->getUser()->getID() !== $this->session->get('id')) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
         }
 
