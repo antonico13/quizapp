@@ -62,7 +62,7 @@ class QuizInstanceController extends SecurityController
         }
 
         if ($this->quizService->findQuiz($quizInstanceID)->getSaved()) {
-            return $this->renderer->renderException(['message' => 'Quiz not found'], 404);
+            return $this->renderer->renderException(['message' => 'Quiz has already been answered'], 403);
         }
 
         $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/question/1';

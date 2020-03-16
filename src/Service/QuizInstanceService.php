@@ -76,10 +76,19 @@ class QuizInstanceService extends AbstractService
 
     /**
      * @param int $quizInstanceID
-     * @return QuizInstance
+     * @return QuizInstance|null
      */
-    public function findQuiz(int $quizInstanceID) : QuizInstance {
+    public function findQuiz(int $quizInstanceID) : ?QuizInstance {
         return $this->entityRepo->find($quizInstanceID);
+    }
+
+    /**
+     * @param int $userID
+     * @param int $quizTemplateID
+     * @return QuizInstance|null
+     */
+    public function findByUser(int $userID, int $quizTemplateID) : ?QuizInstance {
+        return $this->entityRepo->findOneBy(['userid' => $userID, 'quiztemplateid' => $quizTemplateID]);
     }
 
     /**
