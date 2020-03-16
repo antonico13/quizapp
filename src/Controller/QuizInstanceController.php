@@ -49,11 +49,18 @@ class QuizInstanceController extends SecurityController
 
         $quizTemplateID = $routeMatch->getRequestAttributes()['id'];
         $userID = $this->session->get('id');
-        $quizInstanceID = $this->quizService->addQuiz($userID, $quizTemplateID);
-        if ($quizInstanceID == null) {
+
+        $quizInstanceID = $this->session->get('quizInstanceID');
+
+        if (!$quizInstanceID) {
+            $quizInstanceID = $this->quizService->addQuiz($userID, $quizTemplateID);
+            $this->session->set('quizInstanceID', $quizInstanceID);
+        }
+
+        if (!$quizInstanceID) {
             return $this->renderer->renderException(['message' => 'Quiz not found'], 404);
         }
-        $this->session->set('quizInstanceID', $quizInstanceID);
+
         $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/user/quiz/question/1';
 
         return $this->redirect($location, 301);
