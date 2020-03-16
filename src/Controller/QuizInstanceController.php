@@ -61,7 +61,7 @@ class QuizInstanceController extends SecurityController
             return $this->renderer->renderException(['message' => 'Quiz not found'], 404);
         }
 
-        if ($this->quizService->findQuiz($quizInstanceID)) {
+        if ($this->quizService->findQuiz($quizInstanceID)->getSaved()) {
             return $this->renderer->renderException(['message' => 'Quiz not found'], 404);
         }
 
