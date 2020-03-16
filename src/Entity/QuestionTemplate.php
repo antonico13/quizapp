@@ -47,9 +47,9 @@ class QuestionTemplate extends AbstractEntity
     }
 
     /**
-     * @return EntityInterface
+     * @return User
      */
-    public function getUser() : EntityInterface {
+    public function getUser() : User {
         return $this->getRepository()->getForeignEntity(User::class, $this);
     }
 
