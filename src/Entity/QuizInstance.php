@@ -119,4 +119,11 @@ class QuizInstance extends AbstractEntity
     public function setSaved(bool $value) {
         $this->issaved = $value;
     }
+
+    /**
+     * @return bool
+     */
+    public function getSaved() {
+        return $this->issaved;
+    }
 }
