@@ -106,7 +106,17 @@ class QuizInstanceController extends SecurityController
 
         $quizInstanceID = $routeMatch->getRequestAttributes()['id'];
         $quizInstance = $this->quizService->findQuiz($quizInstanceID);
+
+        if (!$quizInstance) {
+            return $this->renderer->renderException(['message' => 'Quiz not found'], 404);
+        }
+
+        if ($quizInstance->getUser()->getID() === $this->session->get('id')) {
+            return $this->renderer->renderException(['message' => 'Forbidden'], 403);
+        }
+
         $questionsAnswers = $this->quizService->getAllQuestions($quizInstanceID);
+
         foreach ($questionsAnswers['answers'] as $answers) {
             foreach ($answers as $answer) {
                 /**
