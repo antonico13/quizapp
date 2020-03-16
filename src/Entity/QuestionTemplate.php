@@ -46,6 +46,9 @@ class QuestionTemplate extends AbstractEntity
         $this->getRepository()->setForeignID($userID, User::class, $this);
     }
 
+    /**
+     * @return EntityInterface
+     */
     public function getUser() : EntityInterface {
         return $this->getRepository()->getForeignEntity(User::class, $this);
     }
