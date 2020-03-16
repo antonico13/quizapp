@@ -22,9 +22,15 @@ class QuizInstanceService extends AbstractService
     public function addQuiz(int $userid, int $quizid) {
         $quiz = new QuizInstance();
         $template = $this->repoManager->getRepository(QuizTemplate::class)->find($quizid);
-        if ($template == null) {
+
+        if (!$template) {
             return null;
         }
+
+        if ($this->findByUser($userid, $quizid)) {
+            return $this->findByUser($userid, $quizid)->getID();
+        }
+
         $quiz->setText($template->getText());
         $quiz->setName($template->getName());
         $this->repoManager->register($quiz);
@@ -76,10 +82,19 @@ class QuizInstanceService extends AbstractService
 
     /**
      * @param int $quizInstanceID
-     * @return \ReallyOrm\Entity\EntityInterface|null
+     * @return QuizInstance|null
      */
-    public function findQuiz(int $quizInstanceID) {
+    public function findQuiz(int $quizInstanceID) : ?QuizInstance {
         return $this->entityRepo->find($quizInstanceID);
+    }
+
+    /**
+     * @param int $userID
+     * @param int $quizTemplateID
+     * @return QuizInstance|null
+     */
+    public function findByUser(int $userID, int $quizTemplateID) : ?QuizInstance {
+        return $this->entityRepo->findOneBy(['userid' => $userID, 'quiztemplateid' => $quizTemplateID]);
     }
 
     /**
