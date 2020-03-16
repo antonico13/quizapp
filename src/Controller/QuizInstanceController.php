@@ -106,7 +106,17 @@ class QuizInstanceController extends SecurityController
 
         $quizInstanceID = $routeMatch->getRequestAttributes()['id'];
         $quizInstance = $this->quizService->findQuiz($quizInstanceID);
+
+        if (!$quizInstance) {
+            return $this->renderer->renderException(['message' => 'Quiz not found'], 404);
+        }
+
+        if ($quizInstance->getUser()->getID() === $this->session->get('id')) {
+            return $this->renderer->renderException(['message' => 'Forbidden'], 403);
+        }
+
         $questionsAnswers = $this->quizService->getAllQuestions($quizInstanceID);
+
         foreach ($questionsAnswers['answers'] as $answers) {
             foreach ($answers as $answer) {
                 /**
@@ -142,6 +152,7 @@ class QuizInstanceController extends SecurityController
         }
 
         $quizInstanceID = $routeMatch->getRequestAttributes()['id'];
+
         $score = $request->getParameter('score');
         $this->quizService->saveScore($quizInstanceID, $score);
         $location = $request->getUri()->getScheme().'://'.substr($request->getUri()->getAuthority(), 0, -3).'/admin/results';
@@ -194,6 +205,12 @@ class QuizInstanceController extends SecurityController
         }
 
         $data = $this->quizService->getQuizzes(null, $sorts, $page, 5, $search);
+
+        foreach ($data as $key => $value) {
+            if ($value->getUser()->getID() === $this->session->get('id')) {
+                unset($data[$key]);
+            }
+        }
 
         $count = ceil($count/5);
 

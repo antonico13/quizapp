@@ -56,9 +56,9 @@ class QuizInstance extends AbstractEntity
     }
 
     /**
-     * @return mixed
+     * @return User
      */
-    public function getUser() {
+    public function getUser() : User {
         return $this->getRepository()->getForeignEntity(User::class, $this);
     }
 
