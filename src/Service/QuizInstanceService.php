@@ -76,9 +76,9 @@ class QuizInstanceService extends AbstractService
 
     /**
      * @param int $quizInstanceID
-     * @return \ReallyOrm\Entity\EntityInterface|null
+     * @return QuizInstance
      */
-    public function findQuiz(int $quizInstanceID) {
+    public function findQuiz(int $quizInstanceID) : QuizInstance {
         return $this->entityRepo->find($quizInstanceID);
     }
 
