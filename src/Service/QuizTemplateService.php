@@ -67,9 +67,9 @@ class QuizTemplateService extends AbstractService
 
     /**
      * @param int $id
-     * @return \ReallyOrm\Entity\EntityInterface|null
+     * @return QuizTemplate|null
      */
-    public function getQuiz(int $id) {
+    public function getQuiz(int $id) : ?QuizTemplate {
         return $this->entityRepo->find($id);
     }
 

@@ -176,7 +176,7 @@ class QuestionTemplateController extends SecurityController
             return $this->renderer->renderException(['message' => 'Question not found'], 404);
         }
 
-        if ($question->getUser()->getID() != $this->session->get('id')) {
+        if ($question->getUser()->getID() !== $this->session->get('id')) {
             return $this->renderer->renderException(['message' => 'Forbidden'], 403);
         }
 
