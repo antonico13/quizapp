@@ -22,9 +22,15 @@ class QuizInstanceService extends AbstractService
     public function addQuiz(int $userid, int $quizid) {
         $quiz = new QuizInstance();
         $template = $this->repoManager->getRepository(QuizTemplate::class)->find($quizid);
-        if ($template == null) {
+
+        if (!$template) {
             return null;
         }
+
+        if ($this->findByUser($userid, $quizid)) {
+            return $this->findByUser($userid, $quizid)->getID();
+        }
+
         $quiz->setText($template->getText());
         $quiz->setName($template->getName());
         $this->repoManager->register($quiz);
